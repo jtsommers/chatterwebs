@@ -32,16 +32,16 @@
 	<mx:Label x="10" y="10" text="msg goes here" fontWeight="bold" id="userNameMsg" width="203" height="46"/>
 	<mx:Button label="Start Video Chat" width="253" id="buttonVideo" click="videoChat();" x="198.5" y="349"/>
 </mx:Canvas>
-	<mx:VideoDisplay x="107" y="24" width="83" height="118"/>
+	<cw:StreamingVideoPlayer x="107" y="24" width="83" height="118" id="user1Stream"/>
 	<mx:VideoDisplay x="289" y="24" width="83" height="118"/>
-	<mx:VideoDisplay height="118" width="92" x="7" y="24"/>
 	<mx:VideoDisplay x="198" y="24" width="83" height="118"/>
+	<mx:VideoDisplay height="118" width="92" x="7" y="24"/>
 	<mx:VideoDisplay x="476" y="24" width="83" height="118"/>
 	<mx:VideoDisplay x="661" y="24" width="83" height="118"/>
 	<mx:VideoDisplay height="118" width="86" x="380" y="24"/>
 	<mx:VideoDisplay x="569" y="24" width="83" height="118"/>
 	<mx:Label x="9" y="150" fontWeight="bold" id="user1" width="89" height="17" textAlign="center"/>
-	<mx:Label x="106" y="150" fontWeight="bold" id="user2" width="84" height="17" textAlign="center"/>
+	<mx:Label x="106" y="150" fontWeight="bold" id="user2" width="84" height="17" textAlign="center" text="eric"/>
 	<mx:Label x="198" y="150" fontWeight="bold" id="user3" width="84" height="17" textAlign="center"/>
 	<mx:Label x="290" y="150" fontWeight="bold" id="user4" width="84" height="17" textAlign="center"/>
 	<mx:Label x="382" y="150" fontWeight="bold" id="user5" width="84" height="17" textAlign="center"/>
