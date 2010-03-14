@@ -43,12 +43,11 @@ package com.chatterwebs
         public var sendButton:Button;
         public var traceArea:TextArea;
         public var serverTime:TextInput;
+        public var user1Stream:StreamingVideoPlayer;
 		
 		public function ChatPage()
 		{
 			addEventListener(FlexEvent.APPLICATION_COMPLETE,mainInit);
-			
-			
 		}
 		
 		private function mainInit(event:FlexEvent):void
@@ -78,7 +77,10 @@ package com.chatterwebs
 		*/
 		public function videoChat():void
 		{
-   			navigateToURL(new URLRequest("http://s3anl4d2.site.nfoservers.com/chatterWeb/client/videoChatClient.html"), "_blank");
+			//TODO remove test scenario for connecting to "eric" test stream from old client (below)
+        	user1Stream.subscribe("eric", nc);
+   			
+   			//navigateToURL(new URLRequest("http://s3anl4d2.site.nfoservers.com/chatterWeb/client/videoChatClient.html"), "_blank");
 		}
 		
        	/** 
@@ -97,6 +99,7 @@ package com.chatterwebs
         			nc.client = this;
         		break;
         		case "Disconnect":
+        			user1Stream.unsubscribe();
         			connectButton.label = "Connect";
         			connectButton.enabled = true;
         			nc.close();

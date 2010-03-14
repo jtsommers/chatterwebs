@@ -6,7 +6,7 @@ package com.chatterwebs
 	
 	import mx.core.UIComponent;
 
-	public class StreamingChatVideo extends UIComponent
+	public class StreamingVideoPlayer extends UIComponent
 	{
 		private var nsPlay:NetStream = null;
 		private var videoRemote:Video;
