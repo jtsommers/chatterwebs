@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- deeplinking/PassURLParamsAsFragments.mxml -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
-	xmlns:ns1="*"
+<cw:ChatPage xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:local="*"
+	xmlns:cw="com.chatterwebs.*"
     viewSourceURL="srcview/index.html"
     layout="absolute" 
     historyManagementEnabled="false" 
->    
- 
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="650" height="381" creationComplete="init(event);" backgroundColor="#e6e6e6" x="69" y="200">
+>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="650" height="381" 
+	backgroundColor="#e6e6e6" x="69" y="200"
+	id="textChat"
+>
 	<mx:Script> 
 	     <![CDATA[
-	     	include "FlexChat.as"
+	     	//commented out due to functionality incorporated in com.chatterwebs.ChatController extension of mx:Application
+	     	//include "FlexChat.as"
 	     ]]> 
      </mx:Script> 
 	<mx:List width="127" height="185" x="513" y="66" id="usersList"/>
@@ -44,4 +49,4 @@
 	<mx:Label x="568" y="150" fontWeight="bold" id="user7" width="84" height="17" textAlign="center"/>
 	<mx:Label x="660" y="150" fontWeight="bold" id="user8" width="84" height="17" textAlign="center"/>
 	
-</mx:Application>
+</cw:ChatPage>

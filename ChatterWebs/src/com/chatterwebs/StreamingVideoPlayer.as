@@ -1,4 +1,4 @@
-package
+package com.chatterwebs
 {
 	import flash.media.Video;
 	import flash.net.NetConnection;
