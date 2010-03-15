@@ -94,8 +94,12 @@ package com.chatterwebs
         		case "Connect":
         			connectButton.label = "Wait";
         			connectButton.enabled = false;
-        			//nc.connect("rtmp://kurosawa.wpcareyonline.com/chat_test", userName.text);
-        			nc.connect("rtmp://207.71.215.101/chatterWebs", userName);
+        			//connect to server using flashvars or if saddress is not present assume local server
+        			var serverAddress:String = this.parameters.saddress;
+        			serverAddress = (serverAddress) ? serverAddress : "rtmp://localhost/chatterWebs"; 
+        			//optional line of code--uncomment for easy local testing
+        			//serverAddress = "rtmp://localhost/chatterWebs";
+        			nc.connect(serverAddress, userName);
         			nc.client = this;
         		break;
         		case "Disconnect":
