@@ -35,7 +35,7 @@ package com.chatterwebs
        
         public var textChat:Canvas;
         public var userNameMsg:Label;
-        public var user1:Label;
+        public var selfid:Label;
         public var usersList:List;
         public var connectButton:Button;
         public var messageArea:TextArea;
@@ -43,7 +43,15 @@ package com.chatterwebs
         public var sendButton:Button;
         public var traceArea:TextArea;
         public var serverTime:TextInput;
+        public var selfFeed:UserFeed;
         public var user1Stream:StreamingVideoPlayer;
+        public var user2Stream:StreamingVideoPlayer;
+        public var user3Stream:StreamingVideoPlayer;
+        public var user4Stream:StreamingVideoPlayer;
+        public var user5Stream:StreamingVideoPlayer;
+        public var user6Stream:StreamingVideoPlayer;
+        public var user7Stream:StreamingVideoPlayer;
+        private var userStreams:Array;
 		
 		public function ChatPage()
 		{
@@ -66,8 +74,13 @@ package com.chatterwebs
             var o:Object = URLUtil.stringToObject(bm.fragment, "&");                
             
         	userName = o.userName;
+        	if(!userName)
+        	{
+        		userName = "Default User";
+        	}
         	userNameMsg.text = "Welcome, "+userName;
-        	user1.text = userName;
+        	selfid.text = userName;
+        	userStreams.push(user1Stream, user2Stream, user3Stream, user4Stream, user5Stream, user6Stream, user7Stream);
 		}
 		
 		/** 
@@ -77,8 +90,20 @@ package com.chatterwebs
 		*/
 		public function videoChat():void
 		{
-			//TODO remove test scenario for connecting to "eric" test stream from old client (below)
+			selfFeed.startCamera();
+			selfFeed.displayCamera();
+			selfFeed.publish(userName, nc);
+			selfFeed.toggleMute();				//defaults to mute to avoid feedback from the incoming stream version of your feed
+			
+			//TODO remove test scenario for connecting to various test streams and replace with static identifiers and entry queue
         	user1Stream.subscribe("eric", nc);
+        	user2Stream.subscribe("sean", nc);
+        	user3Stream.subscribe("sandi", nc);
+        	user4Stream.subscribe("jordan", nc);
+        	user5Stream.subscribe("Default User", nc);
+        	user6Stream.subscribe("testing", nc);
+        	user7Stream.subscribe("testing2", nc);
+        	
    			
    			//navigateToURL(new URLRequest("http://s3anl4d2.site.nfoservers.com/chatterWeb/client/videoChatClient.html"), "_blank");
 		}
@@ -103,7 +128,12 @@ package com.chatterwebs
         			nc.client = this;
         		break;
         		case "Disconnect":
-        			user1Stream.unsubscribe();
+        			for each(var stream:StreamingVideoPlayer in userStreams)
+        			{
+        				stream.killStream();
+        			}
+        			selfFeed.killFeed();
+        			selfFeed.killMirror();
         			connectButton.label = "Connect";
         			connectButton.enabled = true;
         			nc.close();
