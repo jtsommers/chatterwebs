@@ -32,21 +32,21 @@
 	<mx:Label x="10" y="10" text="msg goes here" fontWeight="bold" id="userNameMsg" width="203" height="46"/>
 	<mx:Button label="Start Video Chat" width="253" id="buttonVideo" click="videoChat();" x="198.5" y="349"/>
 </mx:Canvas>
-	<cw:StreamingVideoPlayer x="107" y="24" width="83" height="118" id="user1Stream"/>
-	<mx:VideoDisplay x="289" y="24" width="83" height="118"/>
-	<mx:VideoDisplay x="198" y="24" width="83" height="118"/>
-	<mx:VideoDisplay height="118" width="92" x="7" y="24"/>
-	<mx:VideoDisplay x="476" y="24" width="83" height="118"/>
-	<mx:VideoDisplay x="661" y="24" width="83" height="118"/>
-	<mx:VideoDisplay height="118" width="86" x="380" y="24"/>
-	<mx:VideoDisplay x="569" y="24" width="83" height="118"/>
-	<mx:Label x="9" y="150" fontWeight="bold" id="user1" width="89" height="17" textAlign="center"/>
-	<mx:Label x="106" y="150" fontWeight="bold" id="user2" width="84" height="17" textAlign="center" text="eric"/>
-	<mx:Label x="198" y="150" fontWeight="bold" id="user3" width="84" height="17" textAlign="center"/>
-	<mx:Label x="290" y="150" fontWeight="bold" id="user4" width="84" height="17" textAlign="center"/>
-	<mx:Label x="382" y="150" fontWeight="bold" id="user5" width="84" height="17" textAlign="center"/>
-	<mx:Label x="475" y="150" fontWeight="bold" id="user6" width="84" height="17" textAlign="center"/>
-	<mx:Label x="568" y="150" fontWeight="bold" id="user7" width="84" height="17" textAlign="center"/>
-	<mx:Label x="660" y="150" fontWeight="bold" id="user8" width="84" height="17" textAlign="center"/>
+	<cw:UserFeed height="120" width="90" x="16" y="24" id="selfFeed"/>
+	<cw:StreamingVideoPlayer x="114" y="24" width="90" height="120" id="user1Stream"/>
+	<cw:StreamingVideoPlayer x="212" y="24" width="90" height="120" id="user2Stream"/>
+	<cw:StreamingVideoPlayer x="310" y="24" width="90" height="120" id="user3Stream"/>
+	<cw:StreamingVideoPlayer x="408" y="24" width="90" height="120" id="user4Stream"/>
+	<cw:StreamingVideoPlayer x="506" y="24" width="90" height="120" id="user5Stream"/>
+	<cw:StreamingVideoPlayer x="604" y="24" width="90" height="120" id="user6Stream"/>
+	<cw:StreamingVideoPlayer x="702" y="24" width="90" height="120" id="user7Stream"/>
+	<mx:Label x="16" y="150" fontWeight="bold" id="selfid" width="90" height="17" textAlign="center"/>
+	<mx:Label x="114" y="150" fontWeight="bold" id="user1id" width="90" height="17" textAlign="center" text="eric"/>
+	<mx:Label x="212" y="150" fontWeight="bold" id="user2id" width="90" height="17" textAlign="center" text="sean"/>
+	<mx:Label x="310" y="150" fontWeight="bold" id="user3id" width="90" height="17" textAlign="center" text="sandi"/>
+	<mx:Label x="408" y="150" fontWeight="bold" id="user4id" width="90" height="17" textAlign="center" text="jordan"/>
+	<mx:Label x="506" y="150" fontWeight="bold" id="user5id" width="90" height="17" textAlign="center" text="Default User"/>
+	<mx:Label x="604" y="150" fontWeight="bold" id="user6id" width="90" height="17" textAlign="center" text="testing"/>
+	<mx:Label x="702" y="150" fontWeight="bold" id="user7id" width="90" height="17" textAlign="center" text="testing2"/>
 	
 </cw:ChatPage>

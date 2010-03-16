@@ -22,10 +22,13 @@ package com.chatterwebs
 		
 		
 		// change the video size by passing in a new width and height for the video
-		public function changeVideoSize(width:uint, height:uint):void
+		public function changeVideoSize(newWidth:uint, newHeight:uint):void
 		{
+			//TODO: check for 4:3 aspect ratio? does it need to be?
+			this.width = newWidth;
+			this.height = newHeight;
 			this.removeChild(videoRemote);
-			videoRemote = new Video(width, height);
+			videoRemote = new Video(newWidth, newHeight);
 			this.addChild(videoRemote);
 		}
 		
@@ -64,7 +67,7 @@ package com.chatterwebs
 		}
 		
 		//destroy a video stream (by disconnecting from the media server)
-		public function destruct():void
+		public function killStream():void
 		{
 			this.unsubscribe();
 			videoRemote.clear();
