@@ -3,6 +3,7 @@ package com.chatterwebs
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
+	import flash.media.SoundTransform;
 	
 	import mx.core.UIComponent;
 
@@ -10,7 +11,7 @@ package com.chatterwebs
 	{
 		private var nsPlay:NetStream = null;
 		private var videoRemote:Video;
-		
+		private var mute:Boolean = false;
 		
 		
 		public function StreamingVideoPlayer()
@@ -32,6 +33,23 @@ package com.chatterwebs
 			this.addChild(videoRemote);
 		}
 		
+		// Mute the volume of an incoming stream, written for test purposes not to be called in deployed app
+		// FIXME: make function private or remove for release
+		public function toggleMute():Boolean
+		{
+			mute = !mute;
+			var transform:SoundTransform = new SoundTransform();
+			if(mute)
+			{
+				transform.volume = 0;
+				nsPlay.soundTransform = transform;
+			}else
+			{
+				nsPlay.soundTransform = transform;
+			}
+			
+			return mute;
+		}
 		
 		// function to start a video stream from a string stream name.
 		// use the NetConnection reference from the main application window

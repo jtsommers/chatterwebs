@@ -93,19 +93,28 @@ package com.chatterwebs
 			selfFeed.startCamera();
 			selfFeed.displayCamera();
 			selfFeed.publish(userName, nc);
-			selfFeed.toggleMute();				//defaults to mute to avoid feedback from the incoming stream version of your feed
 			
 			//TODO remove test scenario for connecting to various test streams and replace with static identifiers and entry queue
-        	user1Stream.subscribe("eric", nc);
-        	user2Stream.subscribe("sean", nc);
-        	user3Stream.subscribe("sandi", nc);
-        	user4Stream.subscribe("jordan", nc);
-        	user5Stream.subscribe("Default User", nc);
-        	user6Stream.subscribe("testing", nc);
-        	user7Stream.subscribe("testing2", nc);
+        	playStream("eric", user1Stream);
+        	playStream("sean", user2Stream);
+        	playStream("sandi", user3Stream);
+        	playStream("jordan", user4Stream);
+        	playStream("Default User", user5Stream);
+        	playStream("testing", user6Stream);
+        	playStream("testing2", user7Stream);
         	
    			
    			//navigateToURL(new URLRequest("http://s3anl4d2.site.nfoservers.com/chatterWeb/client/videoChatClient.html"), "_blank");
+		}
+		
+		// Function will mute incoming stream if it is the one linked to current user (to avoid feedback)
+		public function playStream(streamId:String, player:StreamingVideoPlayer):void
+		{
+			player.subscribe(streamId, nc);
+			if(streamId == userName)
+			{
+				player.toggleMute();
+			}
 		}
 		
        	/** 
