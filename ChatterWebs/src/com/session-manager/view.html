@@ -1,0 +1,79 @@
+<html>
+	<head>
+		<script>
+			function deleteGuest(key){
+				execute('DELETE', '/guest/'+ key +'/');
+			}
+			
+			function updateGuest(key){
+				execute('PUT', '/guest/'+ key +'/');
+			}
+			
+			function execute($method,$url){
+				xmlhttp=new XMLHttpRequest();
+				xmlhttp.open($method,$url,true);
+				xmlhttp.send(null);
+			}
+		</script>
+		<style>
+			table{
+				width:600px;
+			}
+		</style>
+	</head>
+	<body>
+		<form method="post" action="/guest/{{group.key}}/">
+			<input type="text" name="nickname"/>
+			<input type="submit" value="Submit"> 
+		</form>
+		Now:{{now|date:"D H:i:s"}}<br/>
+		Later:{{later|date:"D H:i:s"}}<br/>
+		{{test}}
+		<table>
+			<thead>
+				<tr>
+					<td>Updated</td>
+					<td>Name</td>
+					<td>Action</td>
+
+				</tr>
+			</thead>
+			<tbody>
+				{% for guest in guests%}
+				<tr>
+					<td>{{guest.updated|date:"D H:i:s"}}</td>
+					<td>{{guest.nickname}}</td>
+					<td>
+						<a href="#" onclick="updateGuest('{{guest.key}}')">Update</a>
+						<a href="#" onclick="deleteGuest('{{guest.key}}')">Delete</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<br/>
+		Old Guests
+		<table>
+			<thead>
+				<tr>
+					<td>Updated</td>
+					<td>Name</td>
+					<td>Action</td>
+
+				</tr>
+			</thead>
+			<tbody>
+				{% for guest in old_guests%}
+				<tr>
+					<td>{{guest.updated|date:"D H:i:s"}}</td>
+					<td>{{guest.nickname}}</td>
+					<td>
+						<a href="#" onclick="updateGuest('{{guest.key}}')">Update</a>
+						<a href="#" onclick="deleteGuest('{{guest.key}}')">Delete</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>
