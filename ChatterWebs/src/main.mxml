@@ -48,5 +48,13 @@
 	<mx:Label x="506" y="150" fontWeight="bold" id="user5id" width="90" height="17" textAlign="center" text="Default User"/>
 	<mx:Label x="604" y="150" fontWeight="bold" id="user6id" width="90" height="17" textAlign="center" text="testing"/>
 	<mx:Label x="702" y="150" fontWeight="bold" id="user7id" width="90" height="17" textAlign="center" text="testing2"/>
+	<mx:Label x="71" y="589" text="Nickname:"/>
+	<mx:Label x="78" y="604" text="guest_id:"/>
+	<mx:Label x="77" y="619" text="group_id:"/>
+	<mx:Label x="79" y="635" text="updated:"/>
+	<mx:Label x="137" y="589" text="Label" id="test_nickname"/>
+	<mx:Label x="137" y="604" text="Label" id="test_guest_id"/>
+	<mx:Label x="137" y="619" text="Label" id="test_group_id"/>
+	<mx:Label x="137" y="635" text="Label" id="test_updated"/>
 	
 </cw:ChatPage>

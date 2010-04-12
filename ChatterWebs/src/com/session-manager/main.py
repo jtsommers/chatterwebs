@@ -16,8 +16,6 @@ class Guest(db.Model):
 	group = db.ReferenceProperty(Group, collection_name='guests')
 	nickname = db.StringProperty()
 
-
-# RESTful Interface
 class GroupHandler(webapp.RequestHandler):
 	
 	def get(self, group_id=None):
@@ -51,10 +49,7 @@ class GroupHandler(webapp.RequestHandler):
 			
 			template_values = {'groups': groups}
 			path = os.path.join(os.path.dirname(__file__), output_template)
-			self.response.out.write(template.render(path, template_values))
-		
-	def put(self, *group_id):
-		pass	
+			self.response.out.write(template.render(path, template_values))	
 		
 	def post(self):
 		group = Group()

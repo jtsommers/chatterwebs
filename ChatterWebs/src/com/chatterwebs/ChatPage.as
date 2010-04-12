@@ -6,6 +6,9 @@ package com.chatterwebs
 	
 	public class ChatPage extends Application
 	{
+		// TODO: testing tasks plugin
+		// fixme: testing fixme's
+
 		import mx.collections.ArrayCollection; 
 		import flash.net.*;
 		import flash.events.*;
@@ -32,6 +35,8 @@ package com.chatterwebs
 
         private var bm:IBrowserManager;
         private var userName:String;
+        private var guest_id:String;
+        private var group_id:String;
        
         public var textChat:Canvas;
         public var userNameMsg:Label;
@@ -52,6 +57,9 @@ package com.chatterwebs
         public var user6Stream:StreamingVideoPlayer;
         public var user7Stream:StreamingVideoPlayer;
         private var userStreams:Array;
+		private var sessionURL:String = 'http://chatterwebs.appspot.com';
+		private var connection:ConnectionManager;
+		private var groupXML:XML;
 		
 		public function ChatPage()
 		{
@@ -79,9 +87,40 @@ package com.chatterwebs
         		userName = "Default User";
         	}
         	userNameMsg.text = "Welcome, "+userName;
+        	resumeSession();
         	selfid.text = userName;
         	userStreams.push(user1Stream, user2Stream, user3Stream, user4Stream, user5Stream, user6Stream, user7Stream);
 		}
+		
+		
+		// == BEGIN Session Management ============================================================================
+		private function resumeSession():void{								  // Resume session from entry page 
+			var o:Object = URLUtil.stringToObject(bm.fragment, "&");          // get URL   
+			group_id = o.group_id;											  // get group_id
+			guest_id = o.guest_id;											  // get guest_id
+			connection = new ConnectionManager(userName ,group_id, guest_id); // set connection to session manager
+			
+			var updateTimer:Timer = new Timer(10000, 1000);					  // This timer updates the groupXML
+			updateTimer.addEventListener(TimerEvent.TIMER, updateInfo);		  // every 10 seconds
+			updateTimer.start();											  //
+		}
+		private function updateInfo(e:TimerEvent):void
+		{
+			updateGroupInfo();
+		}
+		private function updateGroupInfo():void
+		{
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, setGroupInfo);
+			loader.load(new URLRequest(sessionURL+'/group/'+ group_id +'/?mimetype=xml'));
+		}
+		private function setGroupInfo(e:Event):void
+		{
+		    var groupXML:XML = new XML(e.target.data);						  // update groupXML
+		}
+		// == END Session Management ===============================================================================
+		
+		
 		
 		/** 
 		* videoChat is called whenever the cutton is pressed
