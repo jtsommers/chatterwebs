@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Groups>
-	{% for group in groups%}
-	<Group id="{{group.key}}" name="{{group.nickname}}" members="{{group.members}}"/>
-	{% endfor %}
-</Groups>

@@ -17,6 +17,7 @@ package com.chatterwebs{
 		
 		private var connection:ConnectionManager;
 		private var sessionURL:String = 'http://chatterwebs.appspot.com';
+		//private var sessionURL:String = 'http://localhost:8082';
 		
 		public function EntryPage()
 		{
@@ -33,12 +34,12 @@ package com.chatterwebs{
 		{
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, groupListLoaded);
-			loader.load(new URLRequest(sessionURL+'/group/?mimetype=xml')); // Load xml file of available groups
+			loader.load(new URLRequest(sessionURL+'/index.xml')); // Load xml file of available groups
 		}
 		private function groupListLoaded(e:Event):void{
 		    var xmlObj:XML = new XML(e.target.data);
-			category.dataProvider = xmlObj.Group;                           // Insert groups in COmboBox
-			category.labelField = "@name";	                                // @ name attribute
+			category.dataProvider = xmlObj.group;                           // Insert groups in ComboBox
+			category.labelField = "@nickname";	                                // @ nickname attribute
 		}
 		// == END Populate Groups drop-down ComboBox ===========================================================
 		
@@ -65,13 +66,13 @@ package com.chatterwebs{
 			var group_id:String = category.selectedItem.@id;
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, setGroupInfo);
-			loader.load(new URLRequest(sessionURL+'/group/'+ group_id +'/?mimetype=xml'));
+			loader.load(new URLRequest(sessionURL+'/group/group.xml?group_id='+ group_id));
 		}
 		private function setGroupInfo(e:Event):void
 		{
 		    var group:XML = new XML(e.target.data);
 			memberList.dataProvider = group.Guest;
-			memberList.labelField = "@name";
+			memberList.labelField = "@nickname";
 			
 		}
 		// == END Session Manager ==============================================================================
@@ -84,7 +85,7 @@ package com.chatterwebs{
 		public function enter():void
 		{
 			//navigateToURL(new URLRequest("file:///C:/Users/Sandi/Documents/Flex Builder 3/FlexChat/bin-debug/main.html?#userName="+user_txt.text+"&seatNumber="+seatNumber), "_blank");
-			navigateToURL(new URLRequest("main.html?#userName="+username.text+"&guest_id="+connection.guest_id+"&group_id="+connection.group_id), "_top");
+			navigateToURL(new URLRequest("main.html?#nickname="+username.text+"&guest_id="+connection.guest_id+"&group_id="+connection.group_id), "_top");
 		}
 	}
 }

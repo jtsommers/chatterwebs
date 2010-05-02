@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding='UTF-8'?>
-<Guest id="{{guest.key}}" nickname="{{guest.nickname}}">
-		<updated>{{guest.updated|date:"D H:i:s"}}</updated>
-		<nickname>{{guest.nickname}}</nickname>
-</Guest>
