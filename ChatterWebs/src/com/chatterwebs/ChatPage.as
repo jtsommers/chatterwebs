@@ -57,6 +57,7 @@ package com.chatterwebs
         public var user6Stream:StreamingVideoPlayer;
         public var user7Stream:StreamingVideoPlayer;
         private var userStreams:Array;
+        private var ip:String;
 		private var sessionURL:String = 'http://chatterwebs.appspot.com';
 		private var connection:ConnectionManager;
 		private var groupXML:XML;
@@ -82,6 +83,7 @@ package com.chatterwebs
             var o:Object = URLUtil.stringToObject(bm.fragment, "&");                
             
         	userName = o.userName;
+        	ip = o.ip;
         	if(!userName)
         	{
         		userName = "Default User";
@@ -170,8 +172,11 @@ package com.chatterwebs
         			//connect to server using flashvars or if saddress is not present assume local server
         			var serverAddress:String = this.parameters.saddress;
         			serverAddress = (serverAddress) ? serverAddress : "rtmp://localhost/chatterWebs"; 
-        			//optional line of code--uncomment for easy local testing
-        			//serverAddress = "rtmp://localhost/chatterWebs";
+        			//if a specific IP address was passed in use that over the flashVar saddress
+        			if(ip)
+        			{
+        				serverAddress = "rtmp://"+ip+"/chatterWebs";
+        			}
         			nc.connect(serverAddress, userName);
         			nc.client = this;
         		break;
