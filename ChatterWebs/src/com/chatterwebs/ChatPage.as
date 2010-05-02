@@ -34,7 +34,7 @@ package com.chatterwebs
         import mx.utils.URLUtil;
 
         private var bm:IBrowserManager;
-        private var userName:String;
+        private var nickname:String;
         private var guest_id:String;
         private var group_id:String;
        
@@ -82,15 +82,15 @@ package com.chatterwebs
                http://www.mydomain.com/MyApp.html#firstName=Nick&lastName=Danger */
             var o:Object = URLUtil.stringToObject(bm.fragment, "&");                
             
-        	userName = o.userName;
+        	nickname = o.nickname;
         	ip = o.ip;
-        	if(!userName)
+        	if(!nickname)
         	{
-        		userName = "Default User";
+        		nickname = "Default User";
         	}
-        	userNameMsg.text = "Welcome, "+userName;
+        	userNameMsg.text = "Welcome, "+nickname;
         	resumeSession();
-        	selfid.text = userName;
+        	selfid.text = nickname;
         	userStreams.push(user1Stream, user2Stream, user3Stream, user4Stream, user5Stream, user6Stream, user7Stream);
 		}
 		
@@ -100,7 +100,7 @@ package com.chatterwebs
 			var o:Object = URLUtil.stringToObject(bm.fragment, "&");          // get URL   
 			group_id = o.group_id;											  // get group_id
 			guest_id = o.guest_id;											  // get guest_id
-			connection = new ConnectionManager(userName ,group_id, guest_id); // set connection to session manager
+			connection = new ConnectionManager(nickname ,group_id, guest_id); // set connection to session manager
 			
 			var updateTimer:Timer = new Timer(10000, 1000);					  // This timer updates the groupXML
 			updateTimer.addEventListener(TimerEvent.TIMER, updateInfo);		  // every 10 seconds
@@ -133,7 +133,7 @@ package com.chatterwebs
 		{
 			selfFeed.startCamera();
 			selfFeed.displayCamera();
-			selfFeed.publish(userName, nc);
+			selfFeed.publish(nickname, nc);
 			
 			//TODO remove test scenario for connecting to various test streams and replace with static identifiers and entry queue
         	playStream("eric", user1Stream);
@@ -152,7 +152,7 @@ package com.chatterwebs
 		public function playStream(streamId:String, player:StreamingVideoPlayer):void
 		{
 			player.subscribe(streamId, nc);
-			if(streamId == userName)
+			if(streamId == nickname)
 			{
 				player.toggleMute();
 			}
@@ -177,7 +177,7 @@ package com.chatterwebs
         			{
         				serverAddress = "rtmp://"+ip+"/chatterWebs";
         			}
-        			nc.connect(serverAddress, userName);
+        			nc.connect(serverAddress, nickname);
         			nc.client = this;
         		break;
         		case "Disconnect":
