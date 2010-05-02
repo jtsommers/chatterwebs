@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding='UTF-8'?>
-<Group id="{{group.key}}">
-	{% for guest in guests%}
-	<Guest id="{{guest.key}}" name="{{guest.nickname}}">
-		<Updated>{{guest.updated|date:"D H:i:s"}}</Updated>
-		<Nickname>{{guest.nickname}}</Nickname>
-	</Guest>
-	{% endfor %}
-</Group>
