@@ -5,127 +5,141 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
+# Model Classes
 class Group(db.Model):
 	nickname = db.StringProperty()
 	created = db.DateTimeProperty(auto_now_add=True)
-	members = db.IntegerProperty()
+	seatQTY = db.IntegerProperty()
+	ticketnumber = db.IntegerProperty()
 	
 class Guest(db.Model):
 	created = db.DateTimeProperty(auto_now_add=True)
 	updated = db.DateTimeProperty(auto_now_add=True)
 	group = db.ReferenceProperty(Group, collection_name='guests')
 	nickname = db.StringProperty()
+	ticketnumber = db.IntegerProperty()
 
-class GroupHandler(webapp.RequestHandler):
-	
-	def get(self, group_id=None):
-		now = datetime.now()
-		later = datetime.now() + timedelta(seconds=15)
-		if(group_id):
-			ext = "html"
-			mimetype = self.request.get('mimetype')
-			if(mimetype):
-				ext = mimetype
-				
-			output_template = "view."+ext
-			group = Group.get(group_id)
-			guests = group.guests.filter("updated >", datetime.now() - timedelta(seconds=15)).order("-updated")[0:7]
-			old_guests = group.guests.filter("updated <", datetime.now() - timedelta(seconds=15)).order("-updated")[0:7]
-			template_values = {'group': group,
-							   'guests':guests,
-							   'old_guests':old_guests,
-							   'now': now,
-							   'later':later}
-			path = os.path.join(os.path.dirname(__file__), output_template)
-			self.response.out.write(template.render(path, template_values))
-			
-		else:
-			ext = 'html'
-			mimetype = self.request.get('mimetype')
-			if(mimetype):
-				ext = mimetype
-			output_template = "index."+ext
-			groups = Group.all()
-			
-			template_values = {'groups': groups}
-			path = os.path.join(os.path.dirname(__file__), output_template)
-			self.response.out.write(template.render(path, template_values))	
+# Controller Classes
+# - decorator
+class ajax_or_http_response(webapp.RequestHandler):
+	def	get(self):
+		# Load Template
+		ext = template.split(".")[1]
+		path = os.path.join(os.path.dirname(__file__), "templates/" + ext + "/" +template)
+		self.response.out.write(template.render(path, template_values))
 		
-	def post(self):
+class ViewGroup(webapp.RequestHandler):
+	def get(self, filename):
+		# get template values
+		group_id = self.request.get('group_id')
+		group = Group.get(group_id)
+		guests = group.guests.filter("updated >", datetime.now() - timedelta(seconds=315))
+		seats = guests[0:8]
+		queue = None
+		if(guests.count() >= 8):
+			queue = guests[8:20]
+		template_values = {'group':group,
+						   'seats':seats,
+						   'queue':queue}
+		
+		# Load Template
+		ext = filename.split(".")[1]
+		path = os.path.join(os.path.dirname(__file__), "templates/" + ext + "/" +filename)
+		self.response.out.write(template.render(path, template_values))
+		
+class ViewGuest(webapp.RequestHandler):
+	def get(self, template):
+		# get template values
+		guest_id = self.request.get('guest_id')
+		guest = Guest.get(guest_id)
+		template_values = {'guest': guest}
+		
+		# Load Template
+		ext = filename.split(".")[1]
+		path = os.path.join(os.path.dirname(__file__), "templates/" + ext + "/" +template)
+		self.response.out.write(template.render(path, template_values))	
+			
+class NewGroup(webapp.RequestHandler):
+	def get(self, template=None, nickname=None):
 		group = Group()
-		group.nickname = self.request.get("nickname")
-		group.members = 0
+		if not(nickname):
+			nickname = self.request.get("nickname")
+		group.nickname = nickname
+		group.seatQty = 8
+		group.ticketnumber = 0
 		group.put()
 		self.redirect("/")
 		
-	def delete(self, group_id):
+	def post(self, template):
+		nickname = self.request.get('nickname')
+		self.get(template, nickname)
+		
+class NewGuest(webapp.RequestHandler):
+	def get(self, filename):
+		#create guest
+		group_id = self.request.get('group_id')
+		group = Group.get(group_id)
+		guest = Guest()
+		guest.nickname = self.request.get('nickname')
+		guest.group = group
+		
+		#take a ticket
+		guest.ticketnumber = group.ticketnumber
+		group.ticketnumber = group.ticketnumber + 1
+		group.put() #update group ticketnumber
+		
+		#add guest & update
+		guest.put()
+		self.redirect('/group/'+filename+'?group_id='+group_id)
+	
+	def post(self, filename):
+		self.get(filename)
+		
+class UpdateGuest(webapp.RequestHandler):
+	def get(self, filename):
+		guest_id = self.request.get("guest_id")
+		group_id = self.request.get("group_id")
+		guest = Guest.get(guest_id)
+		guest.updated = datetime.now()
+		guest.put()
+		self.redirect("/group/"+filename+"?group_id="+group_id)
+			
+class DeleteGroup(webapp.RequestHandler):
+	def get(self, template):
+		group_id = self.request.get('group_id') 
 		group = Group().get(group_id)
 		group.delete()
-	
+		self.redirect("/")
 		
-class GuestHandler(webapp.RequestHandler):
-	def get(self, group_id):
-		group = Group.get(group_id)
-		guest = Guest()
-		guest.nickname = self.request.get('nickname')
-		guest.group = group
-		guest.put()
-		
-		ext = "html"
-		mimetype = self.request.get('mimetype')
-		if(mimetype):
-			ext = mimetype
-		output_template = "guest." + ext
-		
-		template_values = {'guest': guest}
-		path = os.path.join(os.path.dirname(__file__), output_template)
-		self.response.out.write(template.render(path, template_values))
-	
-	def post(self, group_id):
-		group = Group.get(group_id)
-		guest = Guest()
-		guest.nickname = self.request.get('nickname')
-		guest.group = group
-		guest.put()
-		self.redirect('/group/'+str(group.key())+'/')
-		
-	def put(self, guest_id):
-		guest = Guest.get(guest_id)
-		guest.updated = datetime.now()
-		guest.put()
-		
-	def delete(self, guest_id):
+class DeleteGuest(webapp.RequestHandler):
+	def get(self, template):
+		guest_id = self.request.get('guest_id')
+		group_id = self.request.get('group_id')
 		guest = Guest().get(guest_id)
 		guest.delete()
-
-class StatusHandler(webapp.RequestHandler):
-	def get(self, guest_id):
-		guest = Guest.get(guest_id)
-		guest.updated = datetime.now()
-		guest.put()
-		
-		ext = "html"
-		mimetype = self.request.get('mimetype')
-		if(mimetype):
-			ext = mimetype
-		output_template = "guest." + ext
-		
-		template_values = {'guest': guest}
-		path = os.path.join(os.path.dirname(__file__), output_template)
-		self.response.out.write(template.render(path, template_values))
+		self.redirect('/group/'+template+'?group_id='+group_id)
 		
 class Index(webapp.RequestHandler):
-	def get(self):
-		self.redirect('/group/')
+	def get(self, filename='index.html'):
+		groups = Group.all()
+		template_values = {'groups': groups}
+		
+		# Load Template
+		ext = filename.split(".")[1]
+		path = os.path.join(os.path.dirname(__file__), "templates/"+ext+"/"+filename)
+		self.response.out.write(template.render(path, template_values))
 
 def main():
-	application = webapp.WSGIApplication([('/', Index),
-										  ('/group/(.*?)/', GroupHandler),
-										  ('/group/', GroupHandler), 
-										  ('/guest/(.*?)/', GuestHandler),
-										  ('/guest/', GuestHandler),
-										  ('/status/guest/(.*?)/', StatusHandler)],
-                                       	  debug=True)
+	application = webapp.WSGIApplication([('/(.*?)', Index),
+										  ('/group/(.*?)', ViewGroup),
+										  ('/guest/(.*?)', ViewGroup),
+										  ('/new/group/(.*?)', NewGroup),
+										  ('/new/guest/(.*?)', NewGuest),
+										  ('/update/guest/(.*?)', UpdateGuest),
+										  ('/delete/group/(.*?)',DeleteGroup),
+										  ('/delete/guest/(.*?)',DeleteGuest),
+										  ],
+       									  debug=True)
 	util.run_wsgi_app(application)
 
 
