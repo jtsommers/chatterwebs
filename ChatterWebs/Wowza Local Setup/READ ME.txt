@@ -1,0 +1,8 @@
+Windows Install Directory: C:\Program Files\Wowza Media Systems\Wowza Media Server 2\
+Mac Install Directory: HD/Library/Wowza Media Server 2.0/
+-Both of the above will be referred to as [install-location]
+-[setup] is the path where this READ ME is located
+
+1) Copy the wms-plugin-textchat.jar from [setup]/lib/ to [install-location]/lib/
+2) Copy the chatterwebs folder from [setup]/conf/ to [install-location]/conf/
+3) Copy the chatterWebs folder from [setup]/applications to [install-location]/applications/
