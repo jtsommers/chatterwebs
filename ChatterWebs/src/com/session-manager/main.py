@@ -33,7 +33,7 @@ class ViewGroup(webapp.RequestHandler):
 		# get template values
 		group_id = self.request.get('group_id')
 		group = Group.get(group_id)
-		guests = group.guests.filter("updated >", datetime.now() - timedelta(seconds=315))
+		guests = group.guests.filter("updated >", datetime.now() - timedelta(seconds=15))
 		seats = guests[0:8]
 		queue = None
 		if(guests.count() >= 8):
@@ -44,7 +44,7 @@ class ViewGroup(webapp.RequestHandler):
 		
 		# Load Template
 		ext = filename.split(".")[1]
-		path = os.path.join(os.path.dirname(__file__), "templates/" + ext + "/" +filename)
+		path = os.path.join(os.path.dirname(__file__), "templates"+ os.sep + ext + os.sep +filename)
 		self.response.out.write(template.render(path, template_values))
 		
 class ViewGuest(webapp.RequestHandler):
@@ -68,7 +68,7 @@ class NewGroup(webapp.RequestHandler):
 		group.seatQty = 8
 		group.ticketnumber = 0
 		group.put()
-		self.redirect("/")
+		self.redirect("/index.html")
 		
 	def post(self, template):
 		nickname = self.request.get('nickname')
@@ -109,7 +109,7 @@ class DeleteGroup(webapp.RequestHandler):
 		group_id = self.request.get('group_id') 
 		group = Group().get(group_id)
 		group.delete()
-		self.redirect("/")
+		self.redirect("/index.html")
 		
 class DeleteGuest(webapp.RequestHandler):
 	def get(self, template):
@@ -130,14 +130,14 @@ class Index(webapp.RequestHandler):
 		self.response.out.write(template.render(path, template_values))
 
 def main():
-	application = webapp.WSGIApplication([('/(.*?)', Index),
-										  ('/group/(.*?)', ViewGroup),
+	application = webapp.WSGIApplication([('/group/(.*?)', ViewGroup),
 										  ('/guest/(.*?)', ViewGroup),
 										  ('/new/group/(.*?)', NewGroup),
 										  ('/new/guest/(.*?)', NewGuest),
 										  ('/update/guest/(.*?)', UpdateGuest),
 										  ('/delete/group/(.*?)',DeleteGroup),
 										  ('/delete/guest/(.*?)',DeleteGuest),
+										  ('/(.*?)', Index)
 										  ],
        									  debug=True)
 	util.run_wsgi_app(application)
