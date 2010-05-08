@@ -45,7 +45,6 @@ package com.chatterwebs
         public var connectButton:Button;
         public var messageArea:TextArea;
         public var sendMessageInput:TextInput;
-        public var sendButton:Button;
         public var traceArea:TextArea;
         public var serverTime:TextInput;
         public var selfFeed:UserFeed;
@@ -93,6 +92,7 @@ package com.chatterwebs
         	resumeSession();
         	selfid.text = nickname;
         	userStreams.push(user1Stream, user2Stream, user3Stream, user4Stream, user5Stream, user6Stream, user7Stream);
+       
 		}
 		
 		
@@ -166,6 +166,9 @@ package com.chatterwebs
          */
         public function connect():void
         {
+        	
+        	addChild(connectButton);
+        	connectButton.x = 0;
         	switch(connectButton.label){
         		case "Connect":
         			connectButton.label = "Wait";
@@ -220,7 +223,6 @@ package com.chatterwebs
 				case "NetConnection.Connect.Success" :
 					connectButton.label = "Disconnect";
             		connectButton.enabled = true;
-            		sendButton.enabled = true; 
             		
             		writeln("Connecting non-persistent Remote SharedObject...\n");
 					ro = SharedObject.getRemote("ChatUsers", nc.uri);
@@ -231,12 +233,13 @@ package com.chatterwebs
 					}
 					textSharedName = "TextUser";
 					var textChatObject:TextChat = new TextChat(textSharedName, nc, messageArea);
+					stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed); // Enables Enter Key for message send
 					getServerTime(); // get local time
 				   break;
 				case "NetConnection.Connect.Closed" :
 					connectButton.label = "Connect";
             		connectButton.enabled = true;
-            		sendButton.enabled = false;  
+            		stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
 				   break;
 				case "NetConnection.Connect.Failed" :
 				   break;
@@ -245,6 +248,16 @@ package com.chatterwebs
 				default :
 				   //statements
 				   break;
+			}
+		}
+		
+		private function keyPressed(event:KeyboardEvent):void
+		{
+			switch(event.keyCode)
+			{
+				case 13: sendMessage(); //Enter key
+						 break;
+				default: break;
 			}
 		}
 		
@@ -284,7 +297,7 @@ package com.chatterwebs
         	writeln("echoStatus: " + event);
         }
         
-		/** sendMessage is called when the sendButton is pressed to test ns.send */
+		/** sendMessage is called when the Enter Key is pressed */
 		public function sendMessage():void{
 			addMessage(sendMessageInput.text);
 			sendMessageInput.text = "";

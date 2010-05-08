@@ -19,10 +19,9 @@
 	     ]]> 
      </mx:Script> 
 	<mx:List width="127" height="185" x="513" y="66" id="usersList"/>
-	<mx:TextArea width="495" height="185" id="messageArea" wordWrap="true" x="10" y="66"/>
+	<mx:TextArea width="495" height="185" id="messageArea" wordWrap="true" x="10" y="66" editable="false"/>
 	<mx:TextInput text="hello" id="sendMessageInput"  width="346" x="159" y="262"/>
-	<mx:Button label="Send" id="sendButton" enabled="false" click="sendMessage();" x="513" y="262"/>
-	<mx:TextInput id="serverTime"  width="243" x="397" y="10"/>
+	<mx:TextInput id="serverTime"  width="243" x="397" y="10" editable="false"/>
 	<mx:Button label="Connect" id="connectButton" click="connect();" x="221" y="10" width="90"/>
 	<mx:TextArea width="630" height="22" id="traceArea" wordWrap="true" x="10" y="319"/>
 	<mx:Label x="10" y="293" text="Trace Window - REMOVE ME" fontWeight="bold" width="203"/>
