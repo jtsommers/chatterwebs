@@ -61,6 +61,7 @@ package com.chatterwebs
 		private var sessionURL:String = 'http://chatterwebs.appspot.com';
 		private var connection:ConnectionManager;
 		private var groupXML:XML;
+		private var textSharedName:String;
 		
 		public function ChatPage()
 		{
@@ -228,6 +229,8 @@ package com.chatterwebs
 						ro.connect(nc);
 						ro.client = this; // refers to the scope of application and public funtions
 					}
+					textSharedName = "TextUser";
+					var textChatObject:TextChat = new TextChat(textSharedName, nc, messageArea);
 					getServerTime(); // get local time
 				   break;
 				case "NetConnection.Connect.Closed" :
@@ -283,8 +286,7 @@ package com.chatterwebs
         
 		/** sendMessage is called when the sendButton is pressed to test ns.send */
 		public function sendMessage():void{
-			// call our remote function and send the message to all connected clients
-			nc.call("msgFromClient", null, sendMessageInput.text);
+			addMessage(sendMessageInput.text);
 			sendMessageInput.text = "";
 		}
 		
@@ -328,6 +330,18 @@ package com.chatterwebs
 			messageArea.text += msg + "\n";
 			messageArea.validateNow();
 			messageArea.verticalScrollPosition = messageArea.maxVerticalScrollPosition;
+		}
+		
+		public function addMessage(txtMsg:String):void
+		{
+			var chatMessage:Object = new Object();
+			
+			chatMessage.message = txtMsg;
+			chatMessage.time = new Date();
+			chatMessage.user = nickname;
+			
+			nc.call("addMessage", null, "TextUser", chatMessage);
+			
 		}
 
 	}
