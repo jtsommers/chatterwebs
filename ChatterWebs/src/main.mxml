@@ -33,22 +33,8 @@
 	<mx:Button label="Start Video Chat" width="253" id="buttonVideo" click="videoChat();" x="75.5" y="349"/>
 	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="videoChat();" x="336.5" y="349"/>
 </mx:Canvas>
-	<cw:UserFeed height="120" width="90" x="16" y="24" id="selfFeed"/>
-	<cw:StreamingVideoPlayer x="114" y="24" width="90" height="120" id="user1Stream"/>
-	<cw:StreamingVideoPlayer x="212" y="24" width="90" height="120" id="user2Stream"/>
-	<cw:StreamingVideoPlayer x="310" y="24" width="90" height="120" id="user3Stream"/>
-	<cw:StreamingVideoPlayer x="408" y="24" width="90" height="120" id="user4Stream"/>
-	<cw:StreamingVideoPlayer x="506" y="24" width="90" height="120" id="user5Stream"/>
-	<cw:StreamingVideoPlayer x="604" y="24" width="90" height="120" id="user6Stream"/>
-	<cw:StreamingVideoPlayer x="702" y="24" width="90" height="120" id="user7Stream"/>
+	<cw:UserFeed height="120" width="160" x="16" y="24" id="selfFeed"/>
 	<mx:Label x="16" y="150" fontWeight="bold" id="selfid" width="90" height="17" textAlign="center"/>
-	<mx:Label x="114" y="150" fontWeight="bold" id="user1id" width="90" height="17" textAlign="center" text="eric"/>
-	<mx:Label x="212" y="150" fontWeight="bold" id="user2id" width="90" height="17" textAlign="center" text="sean"/>
-	<mx:Label x="310" y="150" fontWeight="bold" id="user3id" width="90" height="17" textAlign="center" text="sandi"/>
-	<mx:Label x="408" y="150" fontWeight="bold" id="user4id" width="90" height="17" textAlign="center" text="jordan"/>
-	<mx:Label x="506" y="150" fontWeight="bold" id="user5id" width="90" height="17" textAlign="center" text="Default User"/>
-	<mx:Label x="604" y="150" fontWeight="bold" id="user6id" width="90" height="17" textAlign="center" text="testing"/>
-	<mx:Label x="702" y="150" fontWeight="bold" id="user7id" width="90" height="17" textAlign="center" text="testing2"/>
 	<mx:Label x="71" y="589" text="Nickname:"/>
 	<mx:Label x="78" y="604" text="guest_id:"/>
 	<mx:Label x="77" y="619" text="group_id:"/>
@@ -57,5 +43,6 @@
 	<mx:Label x="137" y="604" text="Label" id="test_guest_id"/>
 	<mx:Label x="137" y="619" text="Label" id="test_group_id"/>
 	<mx:Label x="137" y="635" text="Label" id="test_updated"/>
+	
 	
 </cw:ChatPage>
