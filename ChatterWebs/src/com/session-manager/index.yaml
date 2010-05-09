@@ -13,6 +13,17 @@ indexes:
 - kind: Guest
   properties:
   - name: group
+  - name: ticketnumber
+
+- kind: Guest
+  properties:
+  - name: group
+  - name: ticketnumber
+    direction: desc
+
+- kind: Guest
+  properties:
+  - name: group
   - name: updated
 
 - kind: Guest
