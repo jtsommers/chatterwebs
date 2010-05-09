@@ -51,13 +51,10 @@ package com.chatterwebs
 		private var connection:ConnectionManager;
 		private var groupXML:XML;
 		private var textSharedName:String;
-		private var connectOn:Boolean;
-		private var textSharedName:String;
 		private var connectOn:Boolean;		
 		
 		//TODO: remove test vars
 		public var guestList:Array = new Array();
-		public var viewer1:StreamingVideoViewer;
 		
 		public function ChatPage()
 		{
@@ -183,16 +180,10 @@ package com.chatterwebs
         			var loadBack:String = "EntryPage.html";
         			var exitChatPage:URLRequest = new URLRequest(loadBack);
         			navigateToURL(exitChatPage, "_self");
-        		
-        			
-        			for each(var stream:StreamingVideoPlayer in userStreams)
-        			{
-        				stream.killStream();
-        				stream = null;
         			selfFeed.killFeed();
         			selfFeed.killMirror();
-        		break;
-        	}
+        			break;
+        		}
         }
         //============ functions for sendMessageInput====================//
         // Alter the state of the text in the field
