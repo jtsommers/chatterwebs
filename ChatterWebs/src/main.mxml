@@ -28,7 +28,7 @@
 	<mx:Label x="319" y="12" text="Local Time:"/>
 	<mx:Label x="10" y="10" text="msg goes here" fontWeight="bold" id="userNameMsg" width="203" height="46"/>
 	<mx:Button label="Start Video Chat" width="253" id="buttonVideo" click="videoChat();" x="75.5" y="349"/>
-	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="connectOnSwitch();" x="336.5" y="349"/>
+	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="disconnect();" x="336.5" y="349"/>
 </mx:Canvas>
 	<cw:UserFeed height="120" width="160" x="16" y="24" id="selfFeed"/>
 	<mx:Label x="16" y="150" fontWeight="bold" id="selfid" width="90" height="17" textAlign="center"/>
