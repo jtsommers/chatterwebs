@@ -1,5 +1,5 @@
 package com.chatterwebs{
-	// ActionScript file
+	// ActionScript file test
 	import flash.events.*;
 	import flash.net.*;
 	import flash.utils.*;
