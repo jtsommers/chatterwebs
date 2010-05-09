@@ -42,7 +42,6 @@ package com.chatterwebs
         public var userNameMsg:Label;
         public var selfid:Label;
         public var usersList:List;
-        public var connectButton:Button;
         public var messageArea:TextArea;
         public var sendMessageInput:TextInput;
         public var traceArea:TextArea;
@@ -61,6 +60,7 @@ package com.chatterwebs
 		private var connection:ConnectionManager;
 		private var groupXML:XML;
 		private var textSharedName:String;
+		private var connectOn:Boolean;
 		
 		public function ChatPage()
 		{
@@ -76,6 +76,12 @@ package com.chatterwebs
 
             bm = BrowserManager.getInstance();                
             bm.init("", "Welcome!");
+            
+            connectOn = true;
+            connect();
+            stage.focus = stage; //Set Focus to Messages
+            sendMessageInput.addEventListener(FocusEvent.FOCUS_IN, goBlank);
+            sendMessageInput.addEventListener(FocusEvent.FOCUS_OUT, fillIn);
 
             /* The following code will parse a URL that passes userName as
                query string parameters after the "#" sign; for example:
@@ -88,7 +94,7 @@ package com.chatterwebs
         	{
         		nickname = "Default User";
         	}
-        	userNameMsg.text = "Welcome, "+nickname;
+        	userNameMsg.text = "Welcome, " + nickname;
         	resumeSession();
         	selfid.text = nickname;
         	userStreams.push(user1Stream, user2Stream, user3Stream, user4Stream, user5Stream, user6Stream, user7Stream);
@@ -160,19 +166,15 @@ package com.chatterwebs
 		}
 		
        	/** 
-         * connect is called whenever the connectButton is pressed
+         * connect is called when the the connection is created.
          * and decides what to do based on the current label of the button.
          * NOTE: the rtmp address is in this function. Change it if you need to.
          */
         public function connect():void
         {
         	
-        	addChild(connectButton);
-        	connectButton.x = 0;
-        	switch(connectButton.label){
-        		case "Connect":
-        			connectButton.label = "Wait";
-        			connectButton.enabled = false;
+        	switch(connectOn){
+        		case true:
         			//connect to server using flashvars or if saddress is not present assume local server
         			var serverAddress:String = this.parameters.saddress;
         			serverAddress = (serverAddress) ? serverAddress : "rtmp://localhost/chatterWebs"; 
@@ -183,19 +185,44 @@ package com.chatterwebs
         			}
         			nc.connect(serverAddress, nickname);
         			nc.client = this;
+        			connectOn = false;
         		break;
-        		case "Disconnect":
+        		case false:
+        			nc.close();
+        			var loadBack:String = "EntryPage.html";
+        			var exitChatPage:URLRequest = new URLRequest(loadBack);
+        			navigateToURL(exitChatPage, "_self");
+        		
+        			
         			for each(var stream:StreamingVideoPlayer in userStreams)
         			{
         				stream.killStream();
+        				stream = null;
         			}
         			selfFeed.killFeed();
         			selfFeed.killMirror();
-        			connectButton.label = "Connect";
-        			connectButton.enabled = true;
-        			nc.close();
         		break;
         	}
+        }
+        //============ functions for sendMessageInput====================//
+        // Alter the state of the text in the field
+        private function goBlank(event:FocusEvent):void
+        {
+        	sendMessageInput.text = "";
+        }
+        
+        private function fillIn(event:FocusEvent):void
+        {
+        	sendMessageInput.text = 'Type your message then press "Enter"';
+        }
+        //===============================================================//
+        
+        
+        // Disconnect user
+        public function connectOnSwitch():void
+        {
+        	connectOn = false;
+        	connect();
         }
         
         public function netSecurityError(event:SecurityErrorEvent):void {
@@ -221,9 +248,6 @@ package com.chatterwebs
 			switch (info.code) 
 			{
 				case "NetConnection.Connect.Success" :
-					connectButton.label = "Disconnect";
-            		connectButton.enabled = true;
-            		
             		writeln("Connecting non-persistent Remote SharedObject...\n");
 					ro = SharedObject.getRemote("ChatUsers", nc.uri);
 					if(ro){
@@ -237,8 +261,6 @@ package com.chatterwebs
 					getServerTime(); // get local time
 				   break;
 				case "NetConnection.Connect.Closed" :
-					connectButton.label = "Connect";
-            		connectButton.enabled = true;
             		stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
 				   break;
 				case "NetConnection.Connect.Failed" :
@@ -246,7 +268,6 @@ package com.chatterwebs
 				case "NetConnection.Connect.Rejected" :
 				   break;
 				default :
-				   //statements
 				   break;
 			}
 		}

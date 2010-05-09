@@ -39,7 +39,7 @@ package com.chatterwebs
 			if (secondStr.length < 2)
 				secondStr = "0"+secondStr;
 		
-			msg = "<u>"+hourStr+":"+minuteStr+":"+secondStr+ampm+"</u> - <b>"+chatData.user+"</b>: "+chatData.message;
+			msg = /*"<u>"+hourStr+":"+minuteStr+":"+secondStr+ampm+"</u> - */"<b>"+chatData.user+"</b>: "+chatData.message;
 			return msg;
 			}
 			

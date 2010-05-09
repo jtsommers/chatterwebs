@@ -20,17 +20,15 @@
      </mx:Script> 
 	<mx:List width="127" height="185" x="513" y="66" id="usersList"/>
 	<mx:TextArea width="495" height="185" id="messageArea" wordWrap="true" x="10" y="66" editable="false"/>
-	<mx:TextInput text="hello" id="sendMessageInput"  width="346" x="159" y="262"/>
+	<mx:TextInput text="Type your message then press &quot;Enter&quot;" id="sendMessageInput"  width="495" x="10" y="259"/>
 	<mx:TextInput id="serverTime"  width="243" x="397" y="10" editable="false"/>
-	<mx:Button label="Connect" id="connectButton" click="connect();" x="221" y="10" width="90"/>
 	<mx:TextArea width="630" height="22" id="traceArea" wordWrap="true" x="10" y="319"/>
 	<mx:Label x="10" y="293" text="Trace Window - REMOVE ME" fontWeight="bold" width="203"/>
 	<mx:Label x="513" y="40" text="Users" fontWeight="bold"/>
 	<mx:Label x="319" y="12" text="Local Time:"/>
-	<mx:Label x="10" y="264" text="Type your message here:" width="153"/>
 	<mx:Label x="10" y="10" text="msg goes here" fontWeight="bold" id="userNameMsg" width="203" height="46"/>
 	<mx:Button label="Start Video Chat" width="253" id="buttonVideo" click="videoChat();" x="75.5" y="349"/>
-	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="videoChat();" x="336.5" y="349"/>
+	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="connectOnSwitch();" x="336.5" y="349"/>
 </mx:Canvas>
 	<cw:UserFeed height="120" width="90" x="16" y="24" id="selfFeed"/>
 	<cw:StreamingVideoPlayer x="114" y="24" width="90" height="120" id="user1Stream"/>
