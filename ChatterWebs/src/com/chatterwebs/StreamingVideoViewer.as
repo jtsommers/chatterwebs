@@ -33,6 +33,11 @@ package com.chatterwebs
 			setUser(u);
 		}
 		
+		public function killStream():void
+		{
+			player.killStream();
+		}
+		
 		public function setUser(u:String):void
 		{
 			username = u;

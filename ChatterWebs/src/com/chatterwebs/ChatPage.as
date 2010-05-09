@@ -104,7 +104,7 @@ package com.chatterwebs
         		xpos += 168;
         		userStreams.push(newStream);
         	}
-        	guestList.push("jordan", "eric", "sandi", "sean", "Default User", "testing", "testing2");
+        	guestList = connection.guestList;
 		}
 		
 		
@@ -136,6 +136,8 @@ package com.chatterwebs
 		}
 		private function groupListUpdated(e:Event):void
 		{
+			guestList = connection.guestList;
+			resetVideo();
 			traceArea.text = connection.guestList.toString();
 		}
 		// == END Session Management ===============================================================================
@@ -154,6 +156,14 @@ package com.chatterwebs
 			selfFeed.publish(nickname, nc);
 			selfFeed.toggleHide();
 			for(var i:uint = 0; i < userStreams.length; i++){
+				(userStreams[i] as StreamingVideoViewer).subscribe(guestList[i], nc);
+			}
+		}
+		
+		public function resetVideo():void
+		{
+			for(var i:uint = 0; i < userStreams.length; i++){
+				(userStreams[i] as StreamingVideoViewer).killStream();
 				(userStreams[i] as StreamingVideoViewer).subscribe(guestList[i], nc);
 			}
 		}
