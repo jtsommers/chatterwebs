@@ -21,7 +21,6 @@ package com.chatterwebs
 			player.move(0,0);
 			userLabel = new Label();
 			userLabel.setStyle("textAlign", "center");
-			userLabel.text = "No User";
 			resize(defaultWidth);
 			this.addChild(player);
 			this.addChild(userLabel);
@@ -36,6 +35,12 @@ package com.chatterwebs
 		public function killStream():void
 		{
 			player.killStream();
+			setUser(null);
+		}
+		
+		public function get nickname():String
+		{
+			return username;
 		}
 		
 		public function setUser(u:String):void
