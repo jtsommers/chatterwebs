@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cw:EntryPage 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:cw="com.chatterwebs.*" 
+	layout="absolute" 
+>
+	
+<mx:Canvas width="703" height="402">
+	<mx:Script> 
+	     <![CDATA[
+	     	//
+	     ]]> 
+	     
+     </mx:Script> 
+	<mx:Label x="223.5" y="67" text="Welcome to ChatterWebs" width="203" textAlign="center" id="labelWelcome"/>
+	<mx:TextInput x="310" y="138" width="137" id="username"/>
+	<mx:Label x="154" y="140" text="Enter a screen name:" width="148" textAlign="right" id="labelUsername"/>
+	<mx:Button x="455" y="168" label="Enter Group" id="buttonEnter" click="enter();" width="107"/>
+	<mx:Label x="211" y="170" text="Select a Group:"/>
+	<mx:ComboBox x="310" y="168" width="137" labelField="name" id="category"/>
+	<mx:Button x="455" y="138" label="Start Session" id="startSessionBtn" width="107" click="connect();"/>
+
+</mx:Canvas>
+
+</cw:EntryPage>
