@@ -33,7 +33,12 @@ class ViewGroup(webapp.RequestHandler):
 		# get template values
 		group_id = self.request.get('group_id')
 		group = Group.get(group_id)
-		guests = group.guests.filter("updated >", datetime.now() - timedelta(seconds=15))
+		guests = group.guests.order('ticketnumber')
+		for guest in guests:
+			if(guest.updated < datetime.now() - timedelta(seconds=315)):
+				guest.ticketnumber = -1
+				guest.put()
+		guests.filter("ticketnumber >=", 0)
 		seats = guests[0:8]
 		queue = None
 		if(guests.count() >= 8):
@@ -48,7 +53,7 @@ class ViewGroup(webapp.RequestHandler):
 		self.response.out.write(template.render(path, template_values))
 		
 class ViewGuest(webapp.RequestHandler):
-	def get(self, template):
+	def get(self, filename):
 		# get template values
 		guest_id = self.request.get('guest_id')
 		guest = Guest.get(guest_id)
@@ -56,7 +61,7 @@ class ViewGuest(webapp.RequestHandler):
 		
 		# Load Template
 		ext = filename.split(".")[1]
-		path = os.path.join(os.path.dirname(__file__), "templates/" + ext + "/" +template)
+		path = os.path.join(os.path.dirname(__file__), "templates/" + ext + "/" +filename)
 		self.response.out.write(template.render(path, template_values))	
 			
 class NewGroup(webapp.RequestHandler):
@@ -90,7 +95,13 @@ class NewGuest(webapp.RequestHandler):
 		
 		#add guest & update
 		guest.put()
-		self.redirect('/group/'+filename+'?group_id='+group_id)
+		
+		ext = filename.split(".")[1]
+		if(ext == 'xml'):
+			self.redirect('/guest/'+filename+'?guest_id='+str(guest.key()))
+		elif(ext == 'html'):	
+			self.redirect('/group/'+filename+'?group_id='+group_id)
+			
 	
 	def post(self, filename):
 		self.get(filename)
@@ -128,15 +139,20 @@ class Index(webapp.RequestHandler):
 		ext = filename.split(".")[1]
 		path = os.path.join(os.path.dirname(__file__), "templates/"+ext+"/"+filename)
 		self.response.out.write(template.render(path, template_values))
+		
+class Redirect(webapp.RequestHandler):
+	def get(self):
+		self.redirect('/index.html')
 
 def main():
 	application = webapp.WSGIApplication([('/group/(.*?)', ViewGroup),
-										  ('/guest/(.*?)', ViewGroup),
+										  ('/guest/(.*?)', ViewGuest),
 										  ('/new/group/(.*?)', NewGroup),
 										  ('/new/guest/(.*?)', NewGuest),
 										  ('/update/guest/(.*?)', UpdateGuest),
 										  ('/delete/group/(.*?)',DeleteGroup),
 										  ('/delete/guest/(.*?)',DeleteGuest),
+										  ('/', Redirect),
 										  ('/(.*?)', Index)
 										  ],
        									  debug=True)
