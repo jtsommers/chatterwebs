@@ -6,10 +6,7 @@ package com.chatterwebs
 	
 	public class ChatPage extends Application
 	{
-		// TODO: testing tasks plugin
-		// fixme: testing fixme's
-
-		import mx.collections.ArrayCollection; 
+		import mx.collections.*; 
 		import flash.net.*;
 		import flash.events.*;
 		import flash.utils.*;
@@ -39,6 +36,7 @@ package com.chatterwebs
         private var group_id:String;
        
         public var textChat:Canvas;
+        public var feedArea:UIComponent;
         public var userNameMsg:Label;
         public var selfid:Label;
         public var usersList:List;
@@ -49,18 +47,17 @@ package com.chatterwebs
         public var traceArea:TextArea;
         public var serverTime:TextInput;
         public var selfFeed:UserFeed;
-        public var user1Stream:StreamingVideoPlayer;
-        public var user2Stream:StreamingVideoPlayer;
-        public var user3Stream:StreamingVideoPlayer;
-        public var user4Stream:StreamingVideoPlayer;
-        public var user5Stream:StreamingVideoPlayer;
-        public var user6Stream:StreamingVideoPlayer;
-        public var user7Stream:StreamingVideoPlayer;
-        private var userStreams:Array;
+        private var userStreams:Array = new Array();
         private var ip:String;
 		private var sessionURL:String = 'http://chatterwebs.appspot.com';
 		private var connection:ConnectionManager;
 		private var groupXML:XML;
+		//private var newStream:StreamingVideoViewer;
+		
+		
+		//TODO: remove test vars
+		public var guestList:Array = new Array();
+		public var viewer1:StreamingVideoViewer;
 		
 		public function ChatPage()
 		{
@@ -80,6 +77,8 @@ package com.chatterwebs
             /* The following code will parse a URL that passes userName as
                query string parameters after the "#" sign; for example:
                http://www.mydomain.com/MyApp.html#firstName=Nick&lastName=Danger */
+               
+            
             var o:Object = URLUtil.stringToObject(bm.fragment, "&");                
             
         	nickname = o.nickname;
@@ -91,7 +90,18 @@ package com.chatterwebs
         	userNameMsg.text = "Welcome, "+nickname;
         	resumeSession();
         	selfid.text = nickname;
-        	userStreams.push(user1Stream, user2Stream, user3Stream, user4Stream, user5Stream, user6Stream, user7Stream);
+        	
+        	var xpos:uint = 137;
+        	var ypos:uint = 27;
+        	for (var i:uint = 0; i <7; i++)
+        	{
+        		var newStream:StreamingVideoViewer = new StreamingVideoViewer();
+        		addChild(newStream);
+        		newStream.move(xpos, ypos);
+        		xpos += 168;
+        		userStreams.push(newStream);
+        	}
+        	guestList.push("jordan", "eric", "sandi", "sean", "Default User", "testing", "testing2");
 		}
 		
 		
@@ -125,7 +135,7 @@ package com.chatterwebs
 		
 		
 		/** 
-		* videoChat is called whenever the cutton is pressed
+		* videoChat is called whenever the button is pressed
 		* and decides what to do based on the current label of the button.
 		* NOTE: the rtmp address is in this function. Change it if you need to.
 		*/
@@ -134,27 +144,9 @@ package com.chatterwebs
 			selfFeed.startCamera();
 			selfFeed.displayCamera();
 			selfFeed.publish(nickname, nc);
-			
-			//TODO remove test scenario for connecting to various test streams and replace with static identifiers and entry queue
-        	playStream("eric", user1Stream);
-        	playStream("sean", user2Stream);
-        	playStream("sandi", user3Stream);
-        	playStream("jordan", user4Stream);
-        	playStream("Default User", user5Stream);
-        	playStream("testing", user6Stream);
-        	playStream("testing2", user7Stream);
-        	
-   			
-   			//navigateToURL(new URLRequest("http://s3anl4d2.site.nfoservers.com/chatterWeb/client/videoChatClient.html"), "_blank");
-		}
-		
-		// Function will mute incoming stream if it is the one linked to current user (to avoid feedback)
-		public function playStream(streamId:String, player:StreamingVideoPlayer):void
-		{
-			player.subscribe(streamId, nc);
-			if(streamId == nickname)
-			{
-				player.toggleMute();
+			selfFeed.toggleHide();
+			for(var i:uint = 0; i < userStreams.length; i++){
+				(userStreams[i] as StreamingVideoViewer).subscribe(guestList[i], nc);
 			}
 		}
 		
@@ -181,10 +173,6 @@ package com.chatterwebs
         			nc.client = this;
         		break;
         		case "Disconnect":
-        			for each(var stream:StreamingVideoPlayer in userStreams)
-        			{
-        				stream.killStream();
-        			}
         			selfFeed.killFeed();
         			selfFeed.killMirror();
         			connectButton.label = "Connect";

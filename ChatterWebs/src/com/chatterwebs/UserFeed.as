@@ -20,7 +20,7 @@ package com.chatterwebs
 		public function UserFeed()
 		{
 			super();
-			videoCamera = new Video(90,120);
+			videoCamera = new Video(160,120);
 			this.addChild(videoCamera);
 		}
 		
@@ -31,8 +31,8 @@ package com.chatterwebs
 			microphone = Microphone.getMicrophone();
 		
 			// here are all the quality and performance settings that we suggest
-			//camera.setMode(160, 120, 12, false);
-			camera.setMode(90, 120, 12, false);
+			camera.setMode(160, 120, 12, false);
+			//camera.setMode(90, 120, 12, false);
 			camera.setQuality(0, 75);
 			camera.setKeyFrameInterval(24);
 			microphone.rate = 11;
@@ -45,6 +45,11 @@ package com.chatterwebs
 			videoCamera = new Video(newWidth, newHeight);
 			this.addChild(videoCamera);
 			camera.setMode(newWidth, newHeight, 12, false);
+		}
+		
+		public function toggleHide():void
+		{
+			videoCamera.visible = !videoCamera.visible;
 		}
 		
 		public function displayCamera():void
