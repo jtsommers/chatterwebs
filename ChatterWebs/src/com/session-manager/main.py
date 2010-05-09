@@ -36,8 +36,7 @@ class ViewGroup(webapp.RequestHandler):
 		guests = group.guests.order('ticketnumber')
 		for guest in guests:
 			if(guest.updated < datetime.now() - timedelta(seconds=315)):
-				guest.ticketnumber = -1
-				guest.put()
+				guest.delete()
 		guests.filter("ticketnumber >=", 0)
 		seats = guests[0:8]
 		queue = None

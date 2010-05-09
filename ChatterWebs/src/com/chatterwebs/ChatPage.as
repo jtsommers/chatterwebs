@@ -114,6 +114,7 @@ package com.chatterwebs
 			group_id = o.group_id;											  // get group_id
 			guest_id = o.guest_id;											  // get guest_id
 			connection = new ConnectionManager(nickname ,group_id, guest_id); // set connection to session manager
+			connection.eDispatcher.addEventListener(ConnectionManager.GROUP_CHANGED, groupListUpdated);
 			
 			var updateTimer:Timer = new Timer(10000, 1000);					  // This timer updates the groupXML
 			updateTimer.addEventListener(TimerEvent.TIMER, updateInfo);		  // every 10 seconds
@@ -132,6 +133,10 @@ package com.chatterwebs
 		private function setGroupInfo(e:Event):void
 		{
 		    var groupXML:XML = new XML(e.target.data);						  // update groupXML
+		}
+		private function groupListUpdated(e:Event):void
+		{
+			traceArea.text = connection.guestList.toString();
 		}
 		// == END Session Management ===============================================================================
 		
