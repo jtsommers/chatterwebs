@@ -137,7 +137,7 @@ package com.chatterwebs
 		private function groupListUpdated(e:Event):void
 		{
 			guestList = connection.guestList;
-			resetVideo();
+			updateStreams();
 			traceArea.text = connection.guestList.toString();
 		}
 		// == END Session Management ===============================================================================
@@ -155,27 +155,51 @@ package com.chatterwebs
 			selfFeed.displayCamera();
 			selfFeed.publish(nickname, nc);
 			selfFeed.toggleHide();
-			for(var i:uint = 0; i < userStreams.length; i++){
+			for(var i:uint = 0; i < userStreams.length; i++)
+			{
 				(userStreams[i] as StreamingVideoViewer).subscribe(guestList[i], nc);
 			}
 		}
 		
-		public function resetVideo():void
+		public function updateStreams():void
 		{
-			for(var i:uint = 0; i < userStreams.length; i++){
+			for(var i:uint = 0; i < userStreams.length; i++)
+			{
+				var curStream:StreamingVideoViewer = (userStreams[i] as StreamingVideoViewer);
+				var nick:String = curStream.nickname;
+				if(nick != guestList[i])
+				{
+					curStream.killStream();
+					curStream.subscribe(guestList[i], nc);
+				}
+			}
+		}
+		
+		public function resetVideo():void
+        {
+            for(var i:uint = 0; i < userStreams.length; i++)
+            {
+                    (userStreams[i] as StreamingVideoViewer).killStream();
+                    (userStreams[i] as StreamingVideoViewer).subscribe(guestList[i], nc);
+            }
+        }
+		
+		public function killAllStreams():void
+		{
+			for(var i:uint = 0; i < userStreams.length; i++)
+			{
 				(userStreams[i] as StreamingVideoViewer).killStream();
-				(userStreams[i] as StreamingVideoViewer).subscribe(guestList[i], nc);
 			}
 		}
 		
        	/** 
          * connect is called when the the connection is created.
-         * and decides what to do based on the current label of the button.
-         * NOTE: the rtmp address is in this function. Change it if you need to.
+         * and decides what to do based on the current status of the boolean.
+         * NOTE: the rtmp address defaults to localhost unless flashVars are present.
+         * Both will be overridden if "ip" is present as a URL parameter.
          */
         public function connect():void
         {
-        	
         	switch(connectOn){
         		case true:
         			//connect to server using flashvars or if saddress is not present assume local server
@@ -197,6 +221,7 @@ package com.chatterwebs
         			navigateToURL(exitChatPage, "_self");
         			selfFeed.killFeed();
         			selfFeed.killMirror();
+        			killAllStreams();
         			break;
         		}
         }
@@ -215,7 +240,7 @@ package com.chatterwebs
         
         
         // Disconnect user
-        public function connectOnSwitch():void
+        public function disconnect():void
         {
         	connectOn = false;
         	connect();
