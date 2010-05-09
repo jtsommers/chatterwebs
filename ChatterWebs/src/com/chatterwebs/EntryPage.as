@@ -16,8 +16,8 @@ package com.chatterwebs{
 		public var buttonEnter:Button;
 		
 		private var connection:ConnectionManager;
-		private var sessionURL:String = 'http://chatterwebs.appspot.com';
-		//private var sessionURL:String = 'http://localhost:8082';
+		private var rootURL:String = 'http://chatterwebs.appspot.com';
+		//private var rootURL:String = 'http://localhost:8082';
 		
 		public function EntryPage()
 		{
@@ -34,46 +34,23 @@ package com.chatterwebs{
 		{
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, groupListLoaded);
-			loader.load(new URLRequest(sessionURL+'/index.xml')); // Load xml file of available groups
+			loader.load(new URLRequest(rootURL+'/index.xml')); 		// Load xml file of available groups
 		}
 		private function groupListLoaded(e:Event):void{
 		    var xmlObj:XML = new XML(e.target.data);
-			category.dataProvider = xmlObj.group;                           // Insert groups in ComboBox
-			category.labelField = "@nickname";	                                // @ nickname attribute
+			category.dataProvider = xmlObj.group;                       // Insert groups in ComboBox
+			category.labelField = "@nickname";	                        // @ nickname attribute
 		}
 		// == END Populate Groups drop-down ComboBox ===========================================================
 		
-		
+
 		// == BEGIN Session Manager ============================================================================
 		public function connect():void
 		{
 			var group_id:String = category.selectedItem.@id;
 			connection = new ConnectionManager(username.text,group_id, null); 	// start connection
 			
-			var updateTimer:Timer = new Timer(1000, 1000);
-			updateTimer.addEventListener(TimerEvent.TIMER, updateInfo);
-			updateTimer.start();
-			
 			startSessionBtn.enabled = false; 								  	// No multiple sessions
-		}
-		//---- Group Info Update ----
-		private function updateInfo(e:TimerEvent):void
-		{
-			updateGroupInfo();
-		}
-		public function updateGroupInfo():void
-		{
-			var group_id:String = category.selectedItem.@id;
-			var loader:URLLoader = new URLLoader();
-			loader.addEventListener(Event.COMPLETE, setGroupInfo);
-			loader.load(new URLRequest(sessionURL+'/group/group.xml?group_id='+ group_id));
-		}
-		private function setGroupInfo(e:Event):void
-		{
-		    var group:XML = new XML(e.target.data);
-			memberList.dataProvider = group.Guest;
-			memberList.labelField = "@nickname";
-			
 		}
 		// == END Session Manager ==============================================================================
 		

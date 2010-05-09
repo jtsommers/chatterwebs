@@ -26,7 +26,7 @@
 				{% for guest in seats%}
 				<tr>
 					<td>{{guest.ticketnumber}}</td>
-					<td>{{guest.nickname}}</td>
+					<td><a href="/guest/guest.html?guest_id={{guest.key}}">{{guest.nickname}}</a></td>
 					<td>{{guest.updated|time:"h:i:s"}}</td>
 					<td>
 						<a href="/update/guest/group.html?guest_id={{guest.key}}&group_id={{group.key}}">Update</a>
