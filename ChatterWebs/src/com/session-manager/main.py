@@ -35,7 +35,7 @@ class ViewGroup(webapp.RequestHandler):
 		group = Group.get(group_id)
 		guests = group.guests.order('ticketnumber')
 		for guest in guests:
-			if(guest.updated < datetime.now() - timedelta(seconds=315)):
+			if(guest.updated < datetime.now() - timedelta(seconds=15)):
 				guest.delete()
 		guests.filter("ticketnumber >=", 0)
 		seats = guests[0:8]
