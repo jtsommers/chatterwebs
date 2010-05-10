@@ -155,10 +155,7 @@ package com.chatterwebs
 			selfFeed.displayCamera();
 			selfFeed.publish(nickname, nc);
 			selfFeed.toggleHide();
-			for(var i:uint = 0; i < userStreams.length; i++)
-			{
-				(userStreams[i] as StreamingVideoViewer).subscribe(guestList[i], nc);
-			}
+			updateStreams();
 		}
 		
 		public function updateStreams():void
