@@ -51,9 +51,7 @@ package com.chatterwebs
 		private var connection:ConnectionManager;
 		private var groupXML:XML;
 		private var textSharedName:String;
-		private var connectOn:Boolean;		
-		
-		//TODO: remove test vars
+		private var connectOn:Boolean;
 		public var guestList:Array = new Array();
 		
 		public function ChatPage()
@@ -79,7 +77,7 @@ package com.chatterwebs
 
             /* The following code will parse a URL that passes userName as
                query string parameters after the "#" sign; for example:
-               http://www.mydomain.com/MyApp.html#firstName=Nick&lastName=Danger */
+               http://www.chatterwebs.com/main.html?#nickname=Nick&ip=localhost */
                
             
             var o:Object = URLUtil.stringToObject(bm.fragment, "&");                
