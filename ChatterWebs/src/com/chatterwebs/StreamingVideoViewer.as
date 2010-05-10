@@ -34,8 +34,11 @@ package com.chatterwebs
 		
 		public function killStream():void
 		{
-			player.killStream();
-			setUser(null);
+			if(username != null)
+			{
+				player.killStream();
+				setUser(null);
+			}
 		}
 		
 		public function get nickname():String
