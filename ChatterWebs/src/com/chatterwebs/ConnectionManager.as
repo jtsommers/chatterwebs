@@ -6,7 +6,6 @@ package com.chatterwebs
 	
 	import mx.controls.*;
 	import mx.rpc.http.*;
-	import flash.events.EventDispatcher;
 	
 	public class ConnectionManager
 	{
@@ -36,6 +35,7 @@ package com.chatterwebs
 		//---- Main Session Handler ----
 		private function resumeSession():void
 		{
+			keepAlive(new TimerEvent(Event.COMPLETE));
 			var guestTimer:Timer = new Timer(10000, 1000);
 			guestTimer.addEventListener(TimerEvent.TIMER, keepAlive);
 			guestTimer.start();
