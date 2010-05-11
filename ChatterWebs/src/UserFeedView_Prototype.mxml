@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
-	<mx:Button x="144" y="14" label="-" fontWeight="bold" fontFamily="Courier New" fontSize="21" height="18" width="36" cornerRadius="0"/>
-	<mx:Canvas x="10" y="31" width="180" height="160" cornerRadius="10" borderColor="#757677" borderStyle="solid" backgroundColor="#7F8886" backgroundAlpha=".4">
+	<mx:Style source="com/chatterwebs/assets/styles.css"/>
+	<mx:Button x="134" y="0" label="-" fontWeight="bold" fontFamily="Courier New" fontSize="21" height="18" width="36" cornerRadius="0"/>
+	<mx:Canvas x="0" y="17" width="180" height="160" cornerRadius="10" borderColor="#757677" borderStyle="solid" backgroundColor="#7F8886" backgroundAlpha=".4">
 		<mx:Image x="10" y="10" width="160" height="120"/>
 		<mx:Label x="10" y="130" text="Your Camera" height="20" width="160" textAlign="center" fontWeight="bold"/>
+		<mx:Button x="136" y="10" icon="@Embed(source='com/chatterwebs/assets/mute.png')" width="35" height="35" toggle="true" toolTip="mute" styleName="MuteTest"/>
 	</mx:Canvas>
 </mx:Application>
