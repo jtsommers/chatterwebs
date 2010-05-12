@@ -16,13 +16,24 @@ Button.Mute {	/*icon="@Embed(source='com/chatterwebs/assets/mute.png')"*/
 	overFillAlphas: 0.6, 0.4, 0.6, 0.4;
 	width:"35"; 
 	height:"35";
-	/*Icon*/
+	/*Status Icons (Images reflect current status of mute)*/
+	upIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
+	downIcon: Embed(source="com/chatterwebs/assets/mute.png");  
+	overIcon: Embed(source="com/chatterwebs/assets/microphone.png");
+	disabledIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
+	selectedUpIcon: Embed(source="com/chatterwebs/assets/mute.png");  
+	selectedDownIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
+	selectedOverIcon: Embed(source="com/chatterwebs/assets/mute.png");
+	selectedDisabledIcon: Embed(source="com/chatterwebs/assets/mute.png");
+
+	/*Action Icons (Images reflect action to be performed)*
 	upIcon: Embed(source="com/chatterwebs/assets/mute.png");  
 	downIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
 	overIcon: Embed(source="com/chatterwebs/assets/mute.png");  
 	selectedUpIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
 	selectedDownIcon: Embed(source="com/chatterwebs/assets/mute.png");  
 	selectedOverIcon: Embed(source="com/chatterwebs/assets/microphone.png");
+	*/
 }
 
 Button.Minimize {
@@ -40,21 +51,21 @@ Button.Maximize {
 	textAlign: "center";
 }
 
-Label.UserFeed {
+Label.UserFeedLabel {
 	textAlign: "center";
 	fontWeight: "bold";
 	width:"160";
 	height:"20";
 }
 
-Canvas.UserFeed {
-	width:"180";
-	height:"160";
+Canvas.UserFeedCanvas {
 	cornerRadius:"10";
 	borderColor:"#757677";
 	borderStyle:"solid";
 	backgroundColor:"#7F8886";
 	backgroundAlpha:".4";
+	width:"180";
+	height:"160";
 }
 
 UserFeedViewer.default {
