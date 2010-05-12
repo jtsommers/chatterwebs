@@ -92,7 +92,7 @@ package com.chatterwebs
         	resumeSession();
         	selfid.text = nickname;
         	
-        	var xpos:uint = 137;
+        	var xpos:uint = 200;
         	var ypos:uint = 27;
         	for (var i:uint = 0; i <7; i++)
         	{
