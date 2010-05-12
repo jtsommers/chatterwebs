@@ -79,6 +79,10 @@ package com.chatterwebs
 		{
 			canvas = new Canvas();
 			canvas.styleName = "UserFeedCanvas";
+			canvas.setStyle("borderColor", "#757677");
+			canvas.setStyle("borderStyle", "solid");
+			canvas.setStyle("backgroundColor", "#7F8886");
+			canvas.setStyle("backgroundAlpha", ".4");
 			canvas.move(0, 17);
 			canvas.setActualSize(180, 160);
 			this.addChild(canvas);
@@ -97,9 +101,10 @@ package com.chatterwebs
 			yourCamera = new Label();
 			yourCamera.styleName = "UserFeedLabel";
 			yourCamera.setActualSize(160, 20);
-			yourCamera.move(0, 130);
 			yourCamera.text = "Your Camera";
+			yourCamera.setStyle("textAlign", "center");
 			canvas.addChild(yourCamera);
+			yourCamera.move(0, 130);
 		}
 		
 		private function muteButtonSetup():void
@@ -135,11 +140,11 @@ package com.chatterwebs
 		{
 			if(mute.selected)
 			{
-				toolTip = "Unmute";
+				mute.toolTip = "Unmute";
 			}
 			else
 			{
-				toolTip = "Mute";
+				mute.toolTip = "Mute";
 			}
 			mirror.toggleMute();
 		}
