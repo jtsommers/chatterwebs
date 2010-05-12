@@ -32,7 +32,6 @@ package com.chatterwebs
 		
 			// here are all the quality and performance settings that we suggest
 			camera.setMode(160, 120, 12, false);
-			//camera.setMode(90, 120, 12, false);
 			camera.setQuality(0, 75);
 			camera.setKeyFrameInterval(24);
 			microphone.rate = 11;
@@ -79,7 +78,7 @@ package com.chatterwebs
 			mute = !mute
 			if(mute)
 			{
-				nsPublish.attachAudio(null); //FIXME: untested, may not work as expected
+				nsPublish.attachAudio(null);
 			}else
 			{
 				nsPublish.attachAudio(microphone);
