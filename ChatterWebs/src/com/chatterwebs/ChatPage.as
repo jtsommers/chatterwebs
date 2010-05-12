@@ -12,6 +12,7 @@ package com.chatterwebs
 		import flash.utils.*;
 		import mx.controls.*;
 		import mx.core.UIComponent;
+		import mx.effects.*;
 
         // Current release of FMS only understands AMF0 so tell Flex to 
 		// use AMF0 for all NetConnection, NetStream, and SharedObject objects.
@@ -44,7 +45,7 @@ package com.chatterwebs
         public var traceArea:TextArea;
         public var serverTime:TextInput;
         public var selfFeed:UserFeedViewer;
-        private var userStreams:Array = new Array();
+        [Bindable] private var userStreams:Array = new Array();
         private var ip:String;
 		private var sessionURL:String = 'http://chatterwebs.appspot.com';
 		private var connection:ConnectionManager;
@@ -100,6 +101,8 @@ package com.chatterwebs
         		xpos += 168;
         		userStreams.push(newStream);
         	}
+        	selfFeed.eDispatcher.addEventListener(UserFeedViewer.MINIMIZED, feedListener);
+        	selfFeed.eDispatcher.addEventListener(UserFeedViewer.MAXIMIZED, feedListener);
         	guestList = connection.guestList;
 		}
 		
@@ -109,7 +112,7 @@ package com.chatterwebs
 			var o:Object = URLUtil.stringToObject(bm.fragment, "&");          // get URL   
 			group_id = o.group_id;											  // get group_id
 			guest_id = o.guest_id;											  // get guest_id
-			connection = new ConnectionManager(nickname ,group_id, guest_id); // set connection to session manager
+			connection = new ConnectionManager(nickname, group_id, guest_id); // set connection to session manager
 			connection.eDispatcher.addEventListener(ConnectionManager.GROUP_CHANGED, groupListUpdated);
 			
 			var updateTimer:Timer = new Timer(10000, 1000);					  // This timer updates the groupXML
@@ -163,6 +166,37 @@ package com.chatterwebs
 					curStream.subscribe(guestList[i], nc);
 				}
 			}
+		}
+		
+		public function feedListener(e:Event):void
+		{
+			switch(e.type)
+			{
+				case UserFeedViewer.MINIMIZED:
+					moveStreams(10);
+					break;
+				case UserFeedViewer.MAXIMIZED:
+					moveStreams();
+					break;
+				default:
+					traceArea.text = e.type;
+					break;
+			}
+		}
+		
+		public function moveStreams(start_x:uint = 200):void
+		{
+			var xpos:uint = start_x;
+        	var ypos:uint = 27;
+        	for (var i:uint = 0; i < userStreams.length; i++)
+        	{
+        		var stream:StreamingVideoViewer = (userStreams[i] as StreamingVideoViewer);
+        		var m:Move = new Move(stream);
+        		m.xFrom = stream.x;
+        		m.xTo = xpos;
+        		m.play();
+        		xpos += 168;
+        	}
 		}
 		
 		public function resetVideo():void
