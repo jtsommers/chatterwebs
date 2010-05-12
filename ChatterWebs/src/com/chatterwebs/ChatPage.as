@@ -38,7 +38,6 @@ package com.chatterwebs
         public var textChat:Canvas;
         public var feedArea:UIComponent;
         public var userNameMsg:Label;
-        public var selfid:Label;
         public var usersList:List;
         public var messageArea:TextArea;
         public var sendMessageInput:TextInput;
@@ -90,7 +89,6 @@ package com.chatterwebs
         	}
         	userNameMsg.text = "Welcome, " + nickname;
         	resumeSession();
-        	selfid.text = nickname;
         	
         	var xpos:uint = 200;
         	var ypos:uint = 27;

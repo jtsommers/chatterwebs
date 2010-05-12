@@ -26,7 +26,6 @@
 	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="disconnect();" x="336.5" y="349"/>
 </mx:Canvas>
 	<cw:UserFeedViewer height="177" width="180" x="10" y="10" id="selfFeed"/>
-	<mx:Label x="16" y="150" fontWeight="bold" id="selfid" width="90" height="17" textAlign="center"/>
 	<mx:Label x="71" y="589" text="Nickname:"/>
 	<mx:Label x="78" y="604" text="guest_id:"/>
 	<mx:Label x="77" y="619" text="group_id:"/>
