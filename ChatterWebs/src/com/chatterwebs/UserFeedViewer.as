@@ -99,10 +99,10 @@ package com.chatterwebs
 		private function labelSetup():void
 		{
 			yourCamera = new Label();
-			yourCamera.styleName = "UserFeedLabel";
-			yourCamera.setActualSize(160, 20);
+			yourCamera.width = 160;
+			yourCamera.height = 20;
 			yourCamera.text = "Your Camera";
-			yourCamera.setStyle("textAlign", "center");
+			yourCamera.styleName = "UserFeedLabel";
 			canvas.addChild(yourCamera);
 			yourCamera.move(0, 130);
 		}
