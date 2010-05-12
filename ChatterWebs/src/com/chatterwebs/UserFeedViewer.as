@@ -7,6 +7,7 @@ package com.chatterwebs
 	import mx.controls.Button;
 	import mx.controls.Label;
 	import mx.core.UIComponent;
+	import flash.utils.Timer;
 
 	public class UserFeedViewer extends UIComponent
 	{
@@ -18,6 +19,10 @@ package com.chatterwebs
 		private var minimize:Button;
 		private var maximize:Button;
 		private var mute:Button;
+		
+		public var eDispatcher:EventDispatcher = new EventDispatcher();
+		public static const MINIMIZED:String = "UserFeedView.Minimized";
+		public static const MAXIMIZED:String = "UserFeedView.Maximized";
 		
 		public function UserFeedViewer()
 		{
@@ -60,7 +65,7 @@ package com.chatterwebs
 			minimize = new Button();
 			minimize.styleName = "Minimize";
 			minimize.label = "-";
-			minimize.toolTip = "";
+			minimize.toolTip = "Minimize";
 			minimize.move(134, 0);
 			minimize.setActualSize(36, 18);
 			minimize.addEventListener(MouseEvent.CLICK, minimizeClicked);
@@ -127,13 +132,24 @@ package com.chatterwebs
 			minimize.visible = false;
 			canvas.visible = false;
 			maximize.visible = true;
+			eDispatcher.dispatchEvent(new Event(MINIMIZED));
 		}
 		
 		private function maximizeClicked(e:Event = null):void
 		{
+			maximize.enabled = false;
+			eDispatcher.dispatchEvent(new Event(MAXIMIZED));
+			var animationPause:Timer = new Timer(500, 1);
+			animationPause.addEventListener(TimerEvent.TIMER, maximizeComplete);
+			animationPause.start();
+		}
+		
+		private function maximizeComplete(e:Event):void
+		{
 			maximize.visible = false;
-			canvas.visible = true;
+			maximize.enabled = true;
 			minimize.visible = true;
+			canvas.visible = true;
 		}
 		
 		private function toggleMute(e:Event = null):void
