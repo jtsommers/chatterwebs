@@ -44,7 +44,7 @@ package com.chatterwebs
         public var sendMessageInput:TextInput;
         public var traceArea:TextArea;
         public var serverTime:TextInput;
-        public var selfFeed:UserFeed;
+        public var selfFeed:UserFeedViewer;
         private var userStreams:Array = new Array();
         private var ip:String;
 		private var sessionURL:String = 'http://chatterwebs.appspot.com';
@@ -149,10 +149,7 @@ package com.chatterwebs
 		*/
 		public function videoChat():void
 		{
-			selfFeed.startCamera();
-			selfFeed.displayCamera();
 			selfFeed.publish(nickname, nc);
-			selfFeed.toggleHide();
 			updateStreams();
 		}
 		
@@ -214,8 +211,7 @@ package com.chatterwebs
         			var loadBack:String = "EntryPage.html";
         			var exitChatPage:URLRequest = new URLRequest(loadBack);
         			navigateToURL(exitChatPage, "_self");
-        			selfFeed.killFeed();
-        			selfFeed.killMirror();
+        			selfFeed.kill();
         			killAllStreams();
         			break;
         		}

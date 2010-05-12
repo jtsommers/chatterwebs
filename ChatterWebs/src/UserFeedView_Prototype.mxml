@@ -4,9 +4,9 @@
 	<mx:Button id="mini" x="134" y="0" label="-" fontWeight="bold" fontFamily="Courier New" fontSize="21" height="18" width="36" cornerRadius="0">
 		<mx:click>can.visible=false; mini.visible=false; max.visible=true;</mx:click>
 	</mx:Button>
-	<mx:Canvas id="can" x="0" y="17" width="180" height="160" cornerRadius="10" borderColor="#757677" borderStyle="solid" backgroundColor="#7F8886" backgroundAlpha=".4">
+	<mx:Canvas id="can" x="0" y="17" width="180" height="160" styleName="UserFeedCanvas">
 		<mx:Image x="10" y="10" width="160" height="120"/>
-		<mx:Label x="10" y="130" text="Your Camera" styleName="UserFeed" width="160"/>
+		<mx:Label x="10" y="130" text="Your Camera" styleName="UserFeedLabel" width="160"/>
 		<mx:Button x="136" y="10" width="35" height="35" toggle="true" toolTip="mute" styleName="Mute"/>
 	</mx:Canvas>
 	<mx:Button id="max" x="0" y="155" label="Show Your Camera" styleName="Maximize" width="180" visible="false">
