@@ -4,6 +4,7 @@ package com.chatterwebs
 	
 	import mx.controls.Label;
 	import mx.core.UIComponent;
+	import mx.effects.Resize;
 
 	public class StreamingVideoViewer extends UIComponent
 	{
@@ -66,6 +67,12 @@ package com.chatterwebs
 			player.changeVideoSize(w, h - 20);	//set video size to new size of the container minus space for the 
 			userLabel.setActualSize(w, 20);
 			userLabel.move(0, h-20);
+		}
+		
+		public function animatedResize(w:uint, h:uint = 0):void
+		{
+			var vResize:Resize = new Resize(player);
+			
 		}
 		
 	}

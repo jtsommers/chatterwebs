@@ -1,13 +1,11 @@
 package com.chatterwebs
 {
+	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
-	import flash.media.SoundTransform;
-	
-	import mx.core.UIComponent;
 
-	public class StreamingVideoPlayer extends UIComponent
+	public class StreamingVideoPlayer extends Video
 	{
 		private var nsPlay:NetStream = null;
 		private var videoRemote:Video;
@@ -17,25 +15,25 @@ package com.chatterwebs
 		public function StreamingVideoPlayer()
 		{
 			super();
-			videoRemote = new Video(160,120);
-			this.addChild(videoRemote);
+			this.width = 160;
+			this.height = 120;
 		}
 		
+		public function move(xpos:uint, ypos:uint):void
+		{
+			this.x = xpos;
+			this.y = ypos
+		}
 		
 		// change the video size by passing in a new width and height for the video
 		public function changeVideoSize(newWidth:uint, newHeight:uint):void
 		{
-			//TODO: check for 4:3 aspect ratio? does it need to be?
 			this.width = newWidth;
 			this.height = newHeight;
-			this.removeChild(videoRemote);
-			videoRemote = new Video(newWidth, newHeight);
-			this.addChild(videoRemote);
 		}
 		
-		// Mute the volume of an incoming stream, written for test purposes not to be called in deployed app
-		// FIXME: make function private or remove for release
-		public function toggleMute():Boolean
+		// Mute/Unmute the volume of an incoming stream
+		private function toggleMute():Boolean
 		{
 			mute = !mute;
 			var transform:SoundTransform = new SoundTransform();
@@ -67,7 +65,7 @@ package com.chatterwebs
 				nsPlay.play(streamIdentifier);
 				
 				// attach to the stream
-				videoRemote.attachNetStream(nsPlay);
+				this.attachNetStream(nsPlay);
 			}
 			else
 			{
@@ -79,7 +77,7 @@ package com.chatterwebs
 		//stop playing a video stream (with the stop button)
 		public function unsubscribe():void
 		{
-			videoRemote.attachNetStream(null);
+			this.attachNetStream(null);
 			nsPlay.play(null);
 			nsPlay.close();
 		}
@@ -88,7 +86,7 @@ package com.chatterwebs
 		public function killStream():void
 		{
 			this.unsubscribe();
-			videoRemote.clear();
+			this.clear();
 		}
 		
 	}
