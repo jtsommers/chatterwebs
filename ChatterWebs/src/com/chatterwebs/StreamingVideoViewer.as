@@ -4,6 +4,7 @@ package com.chatterwebs
 	
 	import mx.controls.Label;
 	import mx.core.UIComponent;
+	import mx.effects.*;
 
 	public class StreamingVideoViewer extends UIComponent
 	{
@@ -58,14 +59,39 @@ package com.chatterwebs
 		{
 			if(h == 0)
 			{
-				//auto calculate height from width and standard ratio
-				//TODO: proportions fix? currently does 4:3 video plus extra space for the username label.
+				//auto calculate height from width and standard ratio plus height of label
 				h = 3*w/4 + 20;
 			}
 			this.setActualSize(w, h);
-			player.changeVideoSize(w, h - 20);	//set video size to new size of the container minus space for the 
+			player.changeVideoSize(w, h - 20);	//set video size to new size of the container minus label area 
 			userLabel.setActualSize(w, 20);
 			userLabel.move(0, h-20);
+		}
+		
+		public function animatedResize(w:uint, h:uint = 0):void
+		{
+			if(h == 0)
+			{
+				//auto calculate height from width and standard ratio 4:3 plus space for label
+				h = 3*w/4 + 20;
+			}
+			this.setActualSize(w, h);
+			var videoResize:Resize = new Resize(player);
+			videoResize.heightFrom = player.width;
+			videoResize.heightFrom = player.height;
+			videoResize.widthTo = w;
+			videoResize.heightTo = (h - 20);
+			var labelResize:Resize = new Resize(userLabel);
+			labelResize.heightFrom = userLabel.width;
+			labelResize.heightFrom = userLabel.height;
+			labelResize.widthTo = w;
+			labelResize.heightTo = userLabel.height;
+			var labelMove:Move = new Move(userLabel);
+			labelMove.yFrom = userLabel.y;
+			labelMove.yTo = (h - 20);
+			videoResize.play();
+			labelResize.play();
+			labelMove.play();
 		}
 		
 	}

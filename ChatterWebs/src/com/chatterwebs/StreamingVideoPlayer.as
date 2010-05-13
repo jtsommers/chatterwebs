@@ -1,11 +1,12 @@
 package com.chatterwebs
 {
+	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
-	import flash.media.SoundTransform;
 	
 	import mx.core.UIComponent;
+	import mx.events.ResizeEvent;
 
 	public class StreamingVideoPlayer extends UIComponent
 	{
@@ -19,13 +20,13 @@ package com.chatterwebs
 			super();
 			videoRemote = new Video(160,120);
 			this.addChild(videoRemote);
+			this.addEventListener(ResizeEvent.RESIZE, resizeVideo);
 		}
 		
 		
 		// change the video size by passing in a new width and height for the video
 		public function changeVideoSize(newWidth:uint, newHeight:uint):void
 		{
-			//TODO: check for 4:3 aspect ratio? does it need to be?
 			this.width = newWidth;
 			this.height = newHeight;
 			this.removeChild(videoRemote);
@@ -33,9 +34,14 @@ package com.chatterwebs
 			this.addChild(videoRemote);
 		}
 		
-		// Mute the volume of an incoming stream, written for test purposes not to be called in deployed app
-		// FIXME: make function private or remove for release
-		public function toggleMute():Boolean
+		private function resizeVideo(e:ResizeEvent):void
+		{
+			videoRemote.width = this.width;
+			videoRemote.height = this.height;
+		}
+		
+		// Mute the volume of an incoming stream
+		private function toggleMute():Boolean
 		{
 			mute = !mute;
 			var transform:SoundTransform = new SoundTransform();
@@ -69,12 +75,8 @@ package com.chatterwebs
 				// attach to the stream
 				videoRemote.attachNetStream(nsPlay);
 			}
-			else
-			{
-				// net connection not established properly, add error message to component window
-				//TODO: add error message
-			}
 		}
+		
 		
 		//stop playing a video stream (with the stop button)
 		public function unsubscribe():void
