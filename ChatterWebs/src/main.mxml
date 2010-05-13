@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cw:ChatPage xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:local="*"
+	xmlns:cw="com.chatterwebs.*"
+    viewSourceURL="srcview/index.html"
+    layout="absolute" 
+    historyManagementEnabled="false" 
+>
+<mx:Style source="com/chatterwebs/assets/styles.css"/>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="650" height="381" 
+	backgroundColor="#e6e6e6" x="69" y="200"
+	id="textChat"
+>
+	<mx:List width="127" height="185" x="513" y="66" id="usersList"/>
+	<mx:TextArea width="495" height="185" id="messageArea" wordWrap="true" x="10" y="66" editable="false"/>
+	<mx:TextInput text="Type your message then press &quot;Enter&quot;" id="sendMessageInput"  width="495" x="10" y="259"/>
+	<mx:TextInput id="serverTime"  width="243" x="397" y="10" editable="false"/>
+	<mx:TextArea width="630" height="22" id="traceArea" wordWrap="true" x="10" y="319"/>
+	<mx:Label x="10" y="293" text="Trace Window - REMOVE ME" fontWeight="bold" width="203"/>
+	<mx:Label x="513" y="40" text="Users" fontWeight="bold"/>
+	<mx:Label x="319" y="12" text="Local Time:"/>
+	<mx:Label x="10" y="10" text="msg goes here" fontWeight="bold" id="userNameMsg" width="203" height="46"/>
+	<mx:Button label="Start Video Chat" width="253" id="buttonVideo" click="videoChat();" x="75.5" y="349"/>
+	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="disconnect();" x="336.5" y="349"/>
+	<mx:Button x="513" y="289" label="move" click="debug();"/>
+</mx:Canvas>
+	<cw:UserFeedViewer height="177" width="180" x="10" y="10" id="selfFeed"/>
+	<mx:Label x="71" y="589" text="Nickname:"/>
+	<mx:Label x="78" y="604" text="guest_id:"/>
+	<mx:Label x="77" y="619" text="group_id:"/>
+	<mx:Label x="79" y="635" text="updated:"/>
+	<mx:Label x="137" y="589" text="Label" id="test_nickname"/>
+	<mx:Label x="137" y="604" text="Label" id="test_guest_id"/>
+	<mx:Label x="137" y="619" text="Label" id="test_group_id"/>
+	<mx:Label x="137" y="635" text="Label" id="test_updated"/>
+	
+	
+</cw:ChatPage>

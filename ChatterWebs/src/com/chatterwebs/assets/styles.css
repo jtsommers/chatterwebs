@@ -1,0 +1,74 @@
+/* 
+	CSS file 
+	Note: width and height tags are disabled without the use of a hackaround. 
+	Use UIComponent.setActualSize(width, height) to set variables properly
+	
+	microphone.png and mute.png are based on designs by Joseph Wain from glyphish.com
+	Used with permission under Creative Commons Attribution License.
+*/
+Button.Mute {	/*icon="@Embed(source='com/chatterwebs/assets/mute.png')"*/
+	cornerRadius: 0;
+	fillAlphas: 0.6, 0.4, 0.6, 0.4;
+	fillColors: #ffffff, #999999, #ffffff, #999999;
+	borderColor: #aab3b3;
+	themeColor: #aab3b3;
+	overFillColors: #ffffff, #999999, #ffffff, #999999;
+	overFillAlphas: 0.6, 0.4, 0.6, 0.4;
+	width:"35"; 
+	height:"35";
+	/*Status Icons (Images reflect current status of mute)*/
+	upIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
+	downIcon: Embed(source="com/chatterwebs/assets/mute.png");  
+	overIcon: Embed(source="com/chatterwebs/assets/microphone.png");
+	disabledIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
+	selectedUpIcon: Embed(source="com/chatterwebs/assets/mute.png");  
+	selectedDownIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
+	selectedOverIcon: Embed(source="com/chatterwebs/assets/mute.png");
+	selectedDisabledIcon: Embed(source="com/chatterwebs/assets/mute.png");
+
+	/*Action Icons (Images reflect action to be performed)*
+	upIcon: Embed(source="com/chatterwebs/assets/mute.png");  
+	downIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
+	overIcon: Embed(source="com/chatterwebs/assets/mute.png");  
+	selectedUpIcon: Embed(source="com/chatterwebs/assets/microphone.png");  
+	selectedDownIcon: Embed(source="com/chatterwebs/assets/mute.png");  
+	selectedOverIcon: Embed(source="com/chatterwebs/assets/microphone.png");
+	*/
+}
+
+Button.Minimize {
+	fontWeight:"bold";
+	fontFamily:"Courier New";
+	fontSize:"21";
+	width:"36";
+	height:"18";
+	cornerRadius:"0";
+}
+
+Button.Maximize {
+	width:"180";
+	height:"22";
+	textAlign: "center";
+}
+
+Label.UserFeedLabel {
+	textAlign: "center";
+	fontWeight: "bold";
+	width:"160";
+	height:"20";
+}
+
+Canvas.UserFeedCanvas {
+	cornerRadius:"10";
+	borderColor:"#757677";
+	borderStyle:"solid";
+	backgroundColor:"#7F8886";
+	backgroundAlpha:".4";
+	width:"180";
+	height:"160";
+}
+
+UserFeedViewer.default {
+	width:"180";
+	height:"177";
+}

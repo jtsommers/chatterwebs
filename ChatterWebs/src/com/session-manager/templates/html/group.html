@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<style>
+			table{
+				width:600px;
+				margin-bottom:20px;
+			}
+		</style>
+	</head>
+	<body>
+		<form method="post" action="/new/guest/group.html?group_id={{group.key}}">
+			<input type="text" name="nickname"/>
+			<input type="submit" value="Submit"> 
+		</form>
+		Seats
+		<table>
+			<thead>
+				<tr>
+					<td>Ticket</td>
+					<td>Name</td>
+					<td>Updated</td>
+					<td>Action</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for guest in seats%}
+				<tr>
+					<td>{{guest.ticketnumber}}</td>
+					<td><a href="/guest/guest.html?guest_id={{guest.key}}">{{guest.nickname}}</a></td>
+					<td>{{guest.updated|time:"h:i:s"}}</td>
+					<td>
+						<a href="/update/guest/group.html?guest_id={{guest.key}}&group_id={{group.key}}">Update</a>
+						<a href="/delete/guest/group.html?guest_id={{guest.key}}&group_id={{group.key}}">Delete</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		Queue
+		<table>
+			<thead>
+				<tr>
+					<td>Ticket</td>
+					<td>Name</td>
+					<td>Updated</td>
+					<td>Action</td>
+
+				</tr>
+			</thead>
+			<tbody>
+				{% for guest in queue%}
+				<tr>
+					<td>{{guest.ticketnumber}}</td>
+					<td>{{guest.nickname}}</td>
+					<td>{{guest.updated|date:"D d M Y"}}</td>
+					<td>
+						<a href="/update/guest/group.html?guest_id={{guest.key}}&group_id={{group.key}}">Update</a>
+						<a href="/delete/guest/group.html?guest_id={{guest.key}}&group_id={{group.key}}">Delete</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>
