@@ -94,5 +94,15 @@ package com.chatterwebs
 			labelMove.play();
 		}
 		
+		public function animatedMove(x:uint, y:uint):void
+		{
+			var m:Move = new Move(this);
+    		m.xFrom = this.x;
+    		m.xTo = x;
+    		m.yFrom = this.y;
+    		m.yTo = y;
+    		m.play();
+		}
+		
 	}
 }

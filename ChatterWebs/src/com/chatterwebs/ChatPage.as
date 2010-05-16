@@ -191,10 +191,7 @@ package com.chatterwebs
         	for (var i:uint = 0; i < userStreams.length; i++)
         	{
         		var stream:StreamingVideoViewer = (userStreams[i] as StreamingVideoViewer);
-        		var m:Move = new Move(stream);
-        		m.xFrom = stream.x;
-        		m.xTo = xpos;
-        		m.play();
+        		stream.animatedMove(xpos, stream.y);
         		xpos += 168;
         	}
 		}
