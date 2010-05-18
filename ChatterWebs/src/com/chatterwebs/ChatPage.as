@@ -1,7 +1,5 @@
 package com.chatterwebs
 {
-	import flash.geom.Rectangle;
-	
 	import mx.containers.Canvas;
 	import mx.core.Application;
 	import mx.events.FlexEvent;
@@ -45,6 +43,7 @@ package com.chatterwebs
         public var usersList:List;
         public var messageArea:TextArea;
         public var sendMessageInput:TextInput;
+        public var buttonVideo:Button;			//start video chat button
         public var selfFeed:UserFeedViewer;
         [Bindable] private var userStreams:Array = new Array();
         private var ip:String;
@@ -143,9 +142,18 @@ package com.chatterwebs
 		*/
 		public function videoChat():void
 		{
-			selfFeed.publish(nickname, nc);
-			groupListUpdated(new Event(Event.COMPLETE));
-			updateStreams();
+			if(buttonVideo.label == "Start Video Chat")
+			{
+				selfFeed.publish(nickname, nc);
+				groupListUpdated(new Event(Event.COMPLETE));
+				updateStreams();
+				buttonVideo.label = "Stop Video Chat";
+			}else
+			{
+				selfFeed.kill();
+				updateStreams();
+				buttonVideo.label = "Start Video Chat";
+			}
 		}
 		
 		public function updateStreams():void
