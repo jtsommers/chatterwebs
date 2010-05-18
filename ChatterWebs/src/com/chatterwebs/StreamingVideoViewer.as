@@ -1,5 +1,6 @@
 package com.chatterwebs
 {
+	import flash.geom.Rectangle;
 	import flash.net.NetConnection;
 	
 	import mx.containers.Canvas;
@@ -15,7 +16,7 @@ package com.chatterwebs
 		private var nc:NetConnection;
 		private var labelCanvas:Canvas = new Canvas();
 		
-		private var defaultWidth:uint = 160;
+		private var defaultWidth:uint = 172;
 		
 		public function StreamingVideoViewer()
 		{
@@ -23,10 +24,12 @@ package com.chatterwebs
 			player = new StreamingVideoPlayer();
 			player.move(0,0);
 			userLabel = new Label();
+			userLabel.styleName = "UserFeedLabel";
 			userLabel.setStyle("textAlign", "center");
 			resize(defaultWidth);
 			this.addChild(player);
 			this.addChild(labelCanvas);
+			labelCanvas.styleName = "StreamLabelCanvas";
 			labelCanvas.setStyle("borderColor", "#757677");
 			labelCanvas.setStyle("borderStyle", "solid");
 			labelCanvas.setStyle("backgroundColor", "#7F8886");
@@ -61,6 +64,25 @@ package com.chatterwebs
 			player.subscribe(u, nc);
 		}
 		
+		public static function calculateWidth(numStreams:uint, containerDimensions:Rectangle):uint
+		{
+			var containerWidth:uint = containerDimensions.width;
+			var containerHeight:uint = containerDimensions.height;
+			var usableWidth:uint = containerWidth;
+			var usableHeight:uint = containerHeight;
+			var numRows:uint = 1;
+			if(numStreams > 3)
+			{
+				numRows = 2;
+			}
+			usableWidth -= numStreams*5+5;	//subtract off padding
+			if(usableWidth > 320){
+				usableWidth = 320;			//set to maximum practical width
+			}
+			usableHeight -= numRows*5+5;	//subtract off vertical padding
+			return 0;
+		}
+		
 		//dummy resize function does basic resizing of components
 		public function resize(w:uint, h:uint = 0):void
 		{
@@ -78,6 +100,7 @@ package com.chatterwebs
 			userLabel.width = labelCanvas.width-10;
 		}
 		
+		//resize function (animates to new size)
 		public function animatedResize(w:uint, h:uint = 0):void
 		{
 			if(h == 0)

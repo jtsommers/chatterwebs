@@ -56,8 +56,6 @@ Label.UserFeedLabel {
 	fontWeight: "bold";
 	width:"160";
 	height:"20";
-	backgroundColor:"#7F8886";
-	backgroundAlpha:".2";
 }
 
 Canvas.UserFeedCanvas {
@@ -68,6 +66,14 @@ Canvas.UserFeedCanvas {
 	backgroundAlpha:".4";
 	width:"180";
 	height:"160";
+}
+
+Canvas.StreamLabelCanvas {
+	cornerRadius:"4";
+	borderColor:"#757677";
+	borderStyle:"solid";
+	backgroundColor:"#7F8886";
+	backgroundAlpha:".2";
 }
 
 UserFeedViewer.default {

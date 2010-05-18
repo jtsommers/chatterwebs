@@ -1,5 +1,7 @@
 package com.chatterwebs
 {
+	import flash.geom.Rectangle;
+	
 	import mx.containers.Canvas;
 	import mx.core.Application;
 	import mx.events.FlexEvent;
@@ -99,15 +101,13 @@ package com.chatterwebs
         		var newStream:StreamingVideoViewer = new StreamingVideoViewer();
         		streamArea.addChild(newStream);
         		newStream.move(xpos, ypos);
-        		xpos += 168;
+        		xpos += newStream.width + 5;
         		if(i == 3){
-        			ypos = 147;
+        			ypos = 160;
         			xpos = 5;
         		}
         		userStreams.push(newStream);
-        	}       	
-//        	selfFeed.eDispatcher.addEventListener(UserFeedViewer.MINIMIZED, feedListener);
-//        	selfFeed.eDispatcher.addEventListener(UserFeedViewer.MAXIMIZED, feedListener);
+        	}
         	guestList = connection.guestList;
 		}
 		
@@ -124,7 +124,7 @@ package com.chatterwebs
 		{
 			guestList = connection.guestList;
 			updateStreams();
-			//TODO: update user list in text chat window
+			userNameMsg.text = guestList.length.toString();
 			textChatUserList = new Array();
 			for(var i:uint; i < guestList.length; i++)
 			{
@@ -160,33 +160,6 @@ package com.chatterwebs
 					curStream.subscribe(guestList[i], nc);
 				}
 			}
-		}
-		
-		public function feedListener(e:Event):void
-		{
-			switch(e.type)
-			{
-				case UserFeedViewer.MINIMIZED:
-					moveStreams(10);
-					break;
-				case UserFeedViewer.MAXIMIZED:
-					moveStreams();
-					break;
-				default:
-					break;
-			}
-		}
-		
-		public function moveStreams(start_x:uint = 200):void
-		{
-			var xpos:uint = start_x;
-        	var ypos:uint = 27;
-        	for (var i:uint = 0; i < userStreams.length; i++)
-        	{
-        		var stream:StreamingVideoViewer = (userStreams[i] as StreamingVideoViewer);
-        		stream.animatedMove(xpos, stream.y);
-        		xpos += 168;
-        	}
 		}
 		
 		public function resetVideo():void

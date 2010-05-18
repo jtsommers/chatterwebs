@@ -36,7 +36,7 @@ package com.chatterwebs
 		//---- Main Session Handler ----
 		private function resumeSession():void
 		{
-			var guestTimer:Timer = new Timer(1000, 10000000);
+			var guestTimer:Timer = new Timer(2000, 1000000);
 			guestTimer.addEventListener(TimerEvent.TIMER, keepAlive);
 			guestTimer.start();
 		}
