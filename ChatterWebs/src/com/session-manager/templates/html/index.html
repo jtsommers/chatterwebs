@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<style>
+			table{
+				width:600px;
+			}
+		</style>
+	</head>
+	<body>
+		<form method="post" action="new/group/">
+			<input type="text" name="nickname" value="nickname" onclick="this.value=''"/>
+			<input type="submit" value="Add Group"> 
+		</form>
+		<table>
+			<thead>
+				<tr>
+					<td>Name</td>
+					<td>Members</td>
+					<td>Actions</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for group in groups%}
+				<tr>
+					<td><a href="/group/group.html?group_id={{group.key}}">{{group.nickname}}</a></td>
+					<td>{{group.members}}</td>
+					<td>
+						<a href="delete/group/index.html?group_id={{group.key}}">delete</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>

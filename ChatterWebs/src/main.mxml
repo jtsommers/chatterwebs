@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cw:ChatPage xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:local="*"
+	xmlns:cw="com.chatterwebs.*"
+    viewSourceURL="srcview/index.html"
+    layout="absolute" 
+    historyManagementEnabled="false" 
+>
+<mx:Style source="com/chatterwebs/assets/styles.css"/>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="650" height="290" 
+	backgroundColor="#e6e6e6" x="70" y="350"
+	id="textChat"
+>
+	<mx:List width="127" height="185" x="513" y="36" id="usersList"/>
+	<mx:TextArea width="495" height="185" id="messageArea" wordWrap="true" x="10" y="36" editable="false"/>
+	<mx:TextInput text="Type your message then press &quot;Enter&quot;" id="sendMessageInput"  width="630" x="10" y="229"/>
+	<mx:Label x="513" y="10" text="Users" fontWeight="bold"/>
+	<mx:Label x="10" y="10" text="msg goes here" fontWeight="bold" id="userNameMsg" width="203" height="20"/>
+	<mx:Button label="Start Video Chat" width="253" id="buttonVideo" click="videoChat();" x="75" y="259"/>
+	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="disconnect();" x="336" y="259"/>
+</mx:Canvas>
+	<cw:UserFeedViewer height="177" width="180" x="540" y="165" id="selfFeed"/>
+	
+	
+</cw:ChatPage>

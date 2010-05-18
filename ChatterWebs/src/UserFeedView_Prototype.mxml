@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:Style source="com/chatterwebs/assets/styles.css"/>
+	<mx:Button id="mini" x="134" y="0" label="-" fontWeight="bold" fontFamily="Courier New" fontSize="21" height="18" width="36" cornerRadius="0">
+		<mx:click>can.visible=false; mini.visible=false; max.visible=true;</mx:click>
+	</mx:Button>
+	<mx:Canvas id="can" x="0" y="17" width="180" height="160" styleName="UserFeedCanvas">
+		<mx:Image x="10" y="10" width="160" height="120"/>
+		<mx:Label x="10" y="130" text="Your Camera" styleName="UserFeedLabel" width="160"/>
+		<mx:Button x="136" y="10" width="35" height="35" toggle="true" toolTip="mute" styleName="Mute"/>
+	</mx:Canvas>
+	<mx:Button id="max" x="0" y="155" label="Show Your Camera" styleName="Maximize" width="180" visible="false">
+		<mx:click>can.visible=true; mini.visible=true; max.visible=false;</mx:click>
+	</mx:Button>
+</mx:Application>
