@@ -53,6 +53,7 @@ package com.chatterwebs
 		private var textSharedName:String;
 		private var connectOn:Boolean;
 		public var guestList:Array = new Array();
+		public var textChatObject:TextChat
 		
 		public function ChatPage()
 		{
@@ -297,9 +298,8 @@ package com.chatterwebs
 						ro.client = this; // refers to the scope of application and public funtions
 					}
 					textSharedName = "TextUser";
-					var textChatObject:TextChat = new TextChat(textSharedName, nc, messageArea);
+					textChatObject = new TextChat(textSharedName, nc, messageArea);
 					stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed); // Enables Enter Key for message send
-					getServerTime(); // get local time
 				   break;
 				case "NetConnection.Connect.Closed" :
             		stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
@@ -330,14 +330,7 @@ package com.chatterwebs
 			var currentIndex:Number;
 			var currentNode:Object;
 			var changeList:Array = event.changeList;
-			var temp:Array = new Array();
-			
-			writeln("---- Shared Object Data -----");
-			for(var p:String in ro.data){ 
-				writeln("OnSync> RO: " + p + ": " + ro.data[p]);
-				temp.push(ro.data[p]);
-			}
-			this.usersList.dataProvider = temp; //update list of users
+			this.usersList.dataProvider = guestList; //update list of users
 
 			for (var i:Number=0; i < changeList.length; i++) 
 			{
