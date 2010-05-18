@@ -312,7 +312,6 @@ package com.chatterwebs
 				case 13: 
 					sendMessage(); //Enter key
 					groupListUpdated(new Event(Event.COMPLETE));
-					debug();
 					break;
 				default: 
 					break;
@@ -380,14 +379,5 @@ package com.chatterwebs
 			nc.call("addMessage", null, "TextUser", chatMessage);
 			
 		}
-		
-		public function debug():void
-		{
-			for(var i:uint = 0; i < userStreams.length; i++)
-			{
-				(userStreams[i] as StreamingVideoViewer).animatedResize(320);
-			}
-		}
-
 	}
 }
