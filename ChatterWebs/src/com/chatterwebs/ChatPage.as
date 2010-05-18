@@ -42,8 +42,6 @@ package com.chatterwebs
         public var usersList:List;
         public var messageArea:TextArea;
         public var sendMessageInput:TextInput;
-        public var traceArea:TextArea;
-        public var serverTime:TextInput;
         public var selfFeed:UserFeedViewer;
         [Bindable] private var userStreams:Array = new Array();
         private var ip:String;
@@ -53,7 +51,8 @@ package com.chatterwebs
 		private var textSharedName:String;
 		private var connectOn:Boolean;
 		public var guestList:Array = new Array();
-		public var textChatObject:TextChat
+		public var textChatObject:TextChat;
+		public var textChatUserList:Array = new Array();
 		
 		public function ChatPage()
 		{
@@ -92,7 +91,7 @@ package com.chatterwebs
         	userNameMsg.text = "Welcome, " + nickname;
         	resumeSession();
         	
-        	var xpos:uint = 200;
+        	var xpos:uint = 10;
         	var ypos:uint = 27;
         	for (var i:uint = 0; i <7; i++)
         	{
@@ -114,31 +113,19 @@ package com.chatterwebs
 			group_id = o.group_id;											  // get group_id
 			guest_id = o.guest_id;											  // get guest_id
 			connection = new ConnectionManager(nickname, group_id, guest_id); // set connection to session manager
-			connection.eDispatcher.addEventListener(ConnectionManager.GROUP_CHANGED, groupListUpdated);
-			
-			var updateTimer:Timer = new Timer(10000, 1000);					  // This timer updates the groupXML
-			updateTimer.addEventListener(TimerEvent.TIMER, updateInfo);		  // every 10 seconds
-			updateTimer.start();											  //
-		}
-		private function updateInfo(e:TimerEvent):void
-		{
-			updateGroupInfo();
-		}
-		private function updateGroupInfo():void
-		{
-			var loader:URLLoader = new URLLoader();
-			loader.addEventListener(Event.COMPLETE, setGroupInfo);
-			loader.load(new URLRequest(sessionURL+'/group/'+ group_id +'/?mimetype=xml'));
-		}
-		private function setGroupInfo(e:Event):void
-		{
-		    var groupXML:XML = new XML(e.target.data);						  // update groupXML
+			connection.eDispatcher.addEventListener(ConnectionManager.GROUP_CHANGED, groupListUpdated);										  //
 		}
 		private function groupListUpdated(e:Event):void
 		{
 			guestList = connection.guestList;
 			updateStreams();
-			traceArea.text = connection.guestList.toString();
+			//TODO: update user list in text chat window
+			textChatUserList = new Array();
+			for(var i:uint; i < guestList.length; i++)
+			{
+				textChatUserList.push({label: guestList[i], value:"user"+i});
+			}
+			this.usersList.dataProvider = textChatUserList;
 		}
 		// == END Session Management ===============================================================================
 		
@@ -180,7 +167,6 @@ package com.chatterwebs
 					moveStreams();
 					break;
 				default:
-					traceArea.text = e.type;
 					break;
 			}
 		}
@@ -264,11 +250,12 @@ package com.chatterwebs
         public function disconnect():void
         {
         	connectOn = false;
+        	addMessage("<b>is disconnecting from ChatterWebs.</b>");
         	connect();
         }
         
         public function netSecurityError(event:SecurityErrorEvent):void {
-            writeln("netSecurityError: " + event);
+            //net security error
         }
          
         /** 
@@ -280,17 +267,10 @@ package com.chatterwebs
 		public function netStatus(event:NetStatusEvent):void 
 		{
 			// Write out information about connection events:
-            writeln("netStatus: " + event);
             var info:Object = event.info;
-            for(var p:String in info) {
-                writeln(p + " : " + info[p]);
-            }
-            writeln("");
-
 			switch (info.code) 
 			{
 				case "NetConnection.Connect.Success" :
-            		writeln("Connecting non-persistent Remote SharedObject...\n");
 					ro = SharedObject.getRemote("ChatUsers", nc.uri);
 					if(ro){
 						ro.addEventListener(SyncEvent.SYNC, OnSync);
@@ -300,6 +280,7 @@ package com.chatterwebs
 					textSharedName = "TextUser";
 					textChatObject = new TextChat(textSharedName, nc, messageArea);
 					stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed); // Enables Enter Key for message send
+					addMessage("<b>has connected to ChatterWebs</b>");
 				   break;
 				case "NetConnection.Connect.Closed" :
             		stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
@@ -317,10 +298,14 @@ package com.chatterwebs
 		{
 			switch(event.keyCode)
 			{
-				case 13: sendMessage(); //Enter key
-						 break;
-				default: break;
+				case 13: 
+					sendMessage(); //Enter key
+					groupListUpdated(new Event(Event.COMPLETE));
+					break;
+				default: 
+					break;
 			}
+			
 		}
 		
 		public function OnSync(event:SyncEvent):void 
@@ -335,21 +320,17 @@ package com.chatterwebs
 			for (var i:Number=0; i < changeList.length; i++) 
 			{
 				info =  changeList[i];
-				for (var k:String in info){
-					writeln("OnSync> changeList[" + i + "]." + k + ": " + info[k]);
-				}
 			}
 		}
 	
 		/** echoResult is called when the echoResponder gets a result from the nc.call("echoMessage"..) */
         public function echoResult(msg:String):void{
-        	writeln("echoResult: " + msg + "\n");
-        	this.serverTime.text = msg;
+        	//
         }
         
         /** echoResult is called when the echoResponder gets a error after a nc.call("echoMessage"..) */
         public function echoStatus(event:Event):void{
-        	writeln("echoStatus: " + event);
+        	//
         }
         
 		/** sendMessage is called when the Enter Key is pressed */
@@ -362,33 +343,9 @@ package com.chatterwebs
 		public function getServerTime():void{
 			nc.call("getServerTime", echoResponder,  sendMessageInput.text);
 		}
-
-		/** showMessage is the function called by the inStream. See the netStatus function */
-		public function showMessage(msg:String):void{
-			writeln("showMessage: " + msg + "\n");
-		}
-		
-		public function setUserID(msg:Number):void{
-			writeln("showMessage: " + msg + "\n");
-		}
-		
-		public function setHistory(msg:String):void{
-			writeln("showHistory: " + msg + "\n");
-		}
 		
 		public function msgFromSrvr(msg:String):void{
 			writeMessage(msg);
-		}	
-				
-		/** 
-		 * writeln writes text into the traceArea TextArea instead of using trace. 
-		 * Note to get scrolling to the bottom of the TextArea to work validateNow()
-		 * must be called before scrolling.
-		 */		
-		public function writeln(msg:String):void{
-			traceArea.text += msg + "\n";
-			traceArea.validateNow();
-			traceArea.verticalScrollPosition = traceArea.maxVerticalScrollPosition;
 		}
 		
 		/** 
