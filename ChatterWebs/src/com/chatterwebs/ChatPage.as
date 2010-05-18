@@ -113,30 +113,7 @@ package com.chatterwebs
 			group_id = o.group_id;											  // get group_id
 			guest_id = o.guest_id;											  // get guest_id
 			connection = new ConnectionManager(nickname, group_id, guest_id); // set connection to session manager
-<<<<<<< local
 			connection.eDispatcher.addEventListener(ConnectionManager.GROUP_CHANGED, groupListUpdated);
-			
-			var updateTimer:Timer = new Timer(10000, 1000);					  // This timer updates the groupXML
-			updateTimer.addEventListener(TimerEvent.TIMER, updateInfo);		  // every 10 seconds
-			updateTimer.start();											  //
-		}
-		private function updateInfo(e:TimerEvent):void
-		{
-			updateGroupInfo();
-		}
-		//TODO: what is this doing? that url doesnt work 
-		private function updateGroupInfo():void
-		{
-			var loader:URLLoader = new URLLoader();
-			loader.addEventListener(Event.COMPLETE, setGroupInfo);
-			loader.load(new URLRequest(sessionURL+'/group/'+ group_id +'/?mimetype=xml'));
-		}
-		private function setGroupInfo(e:Event):void
-		{
-		    var groupXML:XML = new XML(e.target.data);						  // update groupXML
-=======
-			connection.eDispatcher.addEventListener(ConnectionManager.GROUP_CHANGED, groupListUpdated);										  //
->>>>>>> other
 		}
 		private function groupListUpdated(e:Event):void
 		{
