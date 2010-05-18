@@ -21,6 +21,7 @@ package com.chatterwebs
 		public function StreamingVideoViewer()
 		{
 			super();
+			this.visible = false;
 			player = new StreamingVideoPlayer();
 			player.move(0,0);
 			userLabel = new Label();
@@ -41,6 +42,7 @@ package com.chatterwebs
 		{
 			nc = netC;
 			setUser(u);
+			this.visible = true;
 		}
 		
 		public function killStream():void
@@ -49,6 +51,7 @@ package com.chatterwebs
 			{
 				player.killStream();
 				setUser(null);
+				this.visible = false;
 			}
 		}
 		
@@ -64,23 +67,32 @@ package com.chatterwebs
 			player.subscribe(u, nc);
 		}
 		
-		public static function calculateWidth(numStreams:uint, containerDimensions:Rectangle):uint
+		public static function calculateDimensions(numStreams:uint, containerDimensions:Rectangle):Rectangle
 		{
 			var containerWidth:uint = containerDimensions.width;
 			var containerHeight:uint = containerDimensions.height;
 			var usableWidth:uint = containerWidth;
 			var usableHeight:uint = containerHeight;
 			var numRows:uint = 1;
-			if(numStreams > 3)
+			if(numStreams <= 3)
+			{
+				numRows = 1;
+				usableWidth -= numStreams*5+5;
+				if(usableWidth > 320){
+					usableWidth = 320;			//set a maximum practical width
+				}
+				usableHeight = 3*usableWidth/4;
+			}else if (numStreams <= 6)
 			{
 				numRows = 2;
+				usableHeight -= numRows*5+5;
+				usableWidth = 4*usableHeight/3;
+			}else if (numStreams <= 8)
+			{
+				numRows = 2;
+				usableWidth -= 4*5+5;
 			}
-			usableWidth -= numStreams*5+5;	//subtract off padding
-			if(usableWidth > 320){
-				usableWidth = 320;			//set to maximum practical width
-			}
-			usableHeight -= numRows*5+5;	//subtract off vertical padding
-			return 0;
+			return new Rectangle(0, 0, usableWidth, usableHeight);
 		}
 		
 		//dummy resize function does basic resizing of components
@@ -114,18 +126,23 @@ package com.chatterwebs
 			videoResize.heightFrom = player.height;
 			videoResize.widthTo = w;
 			videoResize.heightTo = (h);
-			var labelResize:Resize = new Resize(labelCanvas);
+			var labelCanvasResize:Resize = new Resize(labelCanvas);
+			labelCanvasResize.heightFrom = labelCanvas.width;
+			labelCanvasResize.heightFrom = labelCanvas.height;
+			labelCanvasResize.widthTo = w;
+			labelCanvasResize.heightTo = userLabel.height;
+			var labelResize:Resize = new Resize(userLabel);
 			labelResize.heightFrom = userLabel.width;
 			labelResize.heightFrom = userLabel.height;
-			labelResize.widthTo = w;
+			labelResize.widthTo = w-10;
 			labelResize.heightTo = userLabel.height;
 			var labelMove:Move = new Move(labelCanvas);
-			labelMove.yFrom = userLabel.y;
+			labelMove.yFrom = labelCanvas.y;
 			labelMove.yTo = (h-20);
 			videoResize.play();
+			labelCanvasResize.play();
 			labelResize.play();
 			labelMove.play();
-			userLabel.width = labelCanvas.width-10;
 		}
 		
 		public function animatedMove(x:uint, y:uint):void
