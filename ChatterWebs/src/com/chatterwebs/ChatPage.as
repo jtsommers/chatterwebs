@@ -1,5 +1,7 @@
 package com.chatterwebs
 {
+	import flash.geom.Rectangle;
+	
 	import mx.containers.Canvas;
 	import mx.core.Application;
 	import mx.events.FlexEvent;
@@ -123,7 +125,7 @@ package com.chatterwebs
 		{
 			guestList = connection.guestList;
 			updateStreams();
-			userNameMsg.text = guestList.length.toString();
+			dynamicResizeStreams();
 			textChatUserList = new Array();
 			for(var i:uint; i < guestList.length; i++)
 			{
@@ -138,7 +140,6 @@ package com.chatterwebs
 		/** 
 		* videoChat is called whenever the button is pressed
 		* and decides what to do based on the current label of the button.
-		* NOTE: the rtmp address is in this function. Change it if you need to.
 		*/
 		public function videoChat():void
 		{
@@ -166,6 +167,29 @@ package com.chatterwebs
 				{
 					curStream.killStream();
 					curStream.subscribe(guestList[i], nc);
+				}
+			}
+		}
+		
+		public function dynamicResizeStreams():void
+		{
+			var numStreams:uint = guestList.length;
+			var streamSize:Rectangle = StreamingVideoViewer.calculateDimensions(numStreams, streamArea.getBounds(this));
+			var xpos:uint = 5;
+			var ypos:uint = 5;
+			for(var i:uint = 0; i < userStreams.length; i++)
+			{
+				(userStreams[i] as StreamingVideoViewer).animatedResize(streamSize.width);
+				(userStreams[i] as StreamingVideoViewer).animatedMove(xpos, ypos);
+				xpos += streamSize.width+5;
+				if((xpos + streamSize.width) > streamArea.width)
+				{
+					ypos += streamSize.height+5;
+					xpos = 5;
+				}
+				if((ypos + streamSize.height) > streamArea.height)
+				{
+					ypos = 5;
 				}
 			}
 		}

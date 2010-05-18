@@ -41,8 +41,8 @@ package com.chatterwebs
 		public function subscribe(u:String, netC:NetConnection):void
 		{
 			nc = netC;
-			setUser(u);
 			this.visible = true;
+			setUser(u);
 		}
 		
 		public function killStream():void
@@ -62,6 +62,10 @@ package com.chatterwebs
 		
 		public function setUser(u:String):void
 		{
+			if(u == null)
+			{
+				this.visible = false;
+			}
 			username = u;
 			userLabel.text = username;
 			player.subscribe(u, nc);
@@ -78,7 +82,9 @@ package com.chatterwebs
 			{
 				numRows = 1;
 				usableWidth -= numStreams*5+5;
-				if(usableWidth > 320){
+				usableWidth /= numStreams;
+				if(usableWidth > 320)
+				{
 					usableWidth = 320;			//set a maximum practical width
 				}
 				usableHeight = 3*usableWidth/4;
@@ -86,11 +92,23 @@ package com.chatterwebs
 			{
 				numRows = 2;
 				usableHeight -= numRows*5+5;
+				usableHeight /= numRows;
+				if(usableHeight > 240)
+				{
+					usableHeight = 240;
+				}
 				usableWidth = 4*usableHeight/3;
 			}else if (numStreams <= 8)
 			{
+				var firstRowVids:uint = 4;
 				numRows = 2;
-				usableWidth -= 4*5+5;
+				usableWidth -= firstRowVids*5+5;
+				usableWidth /= firstRowVids;
+				usableHeight = 3*usableWidth/4;
+			}else
+			{
+				usableWidth = 160;
+				usableHeight = 120;
 			}
 			return new Rectangle(0, 0, usableWidth, usableHeight);
 		}
