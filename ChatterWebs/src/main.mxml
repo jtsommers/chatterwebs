@@ -17,7 +17,7 @@
 	<mx:TextArea width="464" height="184" id="messageArea" wordWrap="true" x="10" y="30" editable="false"/>
 	<mx:TextInput text="Type your message then press &quot;Enter&quot;" id="sendMessageInput"  width="572" x="10" y="220"/>
 	<mx:Label x="482" y="10" text="Users" fontWeight="bold"/>
-	<mx:Label x="10" y="10" text="msg goes here" fontWeight="bold" id="userNameMsg" width="203" height="20"/>
+	<mx:Label x="10" y="10" text="msg goes here" fontWeight="bold" id="userNameMsg" width="464" height="20"/>
 	<mx:Button label="Start Video Chat" width="180" id="buttonVideo" click="videoChat();" x="590" y="194"/>
 	<mx:Button label="Exit ChatterWebs" width="180" id="exitButton" click="disconnect();" x="590" y="220"/>
 	<cw:UserFeedViewer height="177" width="180" x="590" y="9" id="selfFeed"/>
