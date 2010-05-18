@@ -20,6 +20,7 @@ package com.chatterwebs
 		
 		public var eDispatcher : EventDispatcher = new EventDispatcher(); 
 		public static const GROUP_CHANGED:String = "Group List Changed";
+		public static const SESSION_STARTED:String = "Session Started";
 		
 		public function ConnectionManager(nickname:String, group_id:String, guest_id:String)
 		{
@@ -62,6 +63,7 @@ package com.chatterwebs
 		    guest_id = guest.@id;	
 		    nickname = guest.@nickname;
 		    resumeSession();
+		    eDispatcher.dispatchEvent(new Event(SESSION_STARTED));
 		}
 		//---- END Get new Guest ID ----
 		
@@ -69,6 +71,7 @@ package com.chatterwebs
 		private function refreshSessionData(e:Event):void
 		{
 			var group:XML = new XML(e.target.data);
+			var sn:String = group.@serialnumber;
 			var guests:XMLList = group.seats.guest;
 			var temp_guest_list:Array = new Array();
 			for each(var guest:XML in guests){
