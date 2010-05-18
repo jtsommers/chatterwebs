@@ -13,7 +13,7 @@ package com.chatterwebs
 		private var player:StreamingVideoPlayer;
 		private var userLabel:Label;
 		private var nc:NetConnection;
-		private var canvas:Canvas;
+		private var labelCanvas:Canvas = new Canvas();
 		
 		private var defaultWidth:uint = 160;
 		
@@ -26,26 +26,18 @@ package com.chatterwebs
 			userLabel.setStyle("textAlign", "center");
 			resize(defaultWidth);
 			this.addChild(player);
-			this.addChild(userLabel);
+			this.addChild(labelCanvas);
+			labelCanvas.setStyle("borderColor", "#757677");
+			labelCanvas.setStyle("borderStyle", "solid");
+			labelCanvas.setStyle("backgroundColor", "#7F8886");
+			labelCanvas.setStyle("backgroundAlpha", ".2");
+			labelCanvas.addChild(userLabel);
 		}
 		
 		public function subscribe(u:String, netC:NetConnection):void
 		{
 			nc = netC;
 			setUser(u);
-		}
-		
-		private function canvasSetup():void
-		{
-			canvas = new Canvas();
-			canvas.styleName = "UserFeedCanvas";
-			canvas.setStyle("borderColor", "#757677");
-			canvas.setStyle("borderStyle", "solid");
-			canvas.setStyle("backgroundColor", "#7F8886");
-			canvas.setStyle("backgroundAlpha", ".4");
-			canvas.move(0, 0);
-			canvas.setActualSize(170, 150);
-			this.addChild(canvas);
 		}
 		
 		public function killStream():void
@@ -75,12 +67,15 @@ package com.chatterwebs
 			if(h == 0)
 			{
 				//auto calculate height from width and standard ratio plus height of label
-				h = 3*w/4 + 20;
+				h = 3*w/4;
 			}
 			this.setActualSize(w, h);
-			player.changeVideoSize(w, h - 20);	//set video size to new size of the container minus label area 
+			player.changeVideoSize(w, h);	//set video size to new size of the container minus label area 
 			userLabel.setActualSize(w, 20);
-			userLabel.move(0, h-20);
+			labelCanvas.setActualSize(w, 20);
+			labelCanvas.move(0, h-20);
+			userLabel.move(5, 0);
+			userLabel.width = labelCanvas.width-10;
 		}
 		
 		public function animatedResize(w:uint, h:uint = 0):void
@@ -88,25 +83,26 @@ package com.chatterwebs
 			if(h == 0)
 			{
 				//auto calculate height from width and standard ratio 4:3 plus space for label
-				h = 3*w/4 + 20;
+				h = 3*w/4;
 			}
 			this.setActualSize(w, h);
 			var videoResize:Resize = new Resize(player);
 			videoResize.heightFrom = player.width;
 			videoResize.heightFrom = player.height;
 			videoResize.widthTo = w;
-			videoResize.heightTo = (h - 20);
-			var labelResize:Resize = new Resize(userLabel);
+			videoResize.heightTo = (h);
+			var labelResize:Resize = new Resize(labelCanvas);
 			labelResize.heightFrom = userLabel.width;
 			labelResize.heightFrom = userLabel.height;
 			labelResize.widthTo = w;
 			labelResize.heightTo = userLabel.height;
-			var labelMove:Move = new Move(userLabel);
+			var labelMove:Move = new Move(labelCanvas);
 			labelMove.yFrom = userLabel.y;
-			labelMove.yTo = (h - 20);
+			labelMove.yTo = (h-20);
 			videoResize.play();
 			labelResize.play();
 			labelMove.play();
+			userLabel.width = labelCanvas.width-10;
 		}
 		
 		public function animatedMove(x:uint, y:uint):void
