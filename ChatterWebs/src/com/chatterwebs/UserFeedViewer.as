@@ -2,12 +2,12 @@ package com.chatterwebs
 {
 	import flash.events.*;
 	import flash.net.NetConnection;
+	import flash.utils.Timer;
 	
 	import mx.containers.Canvas;
 	import mx.controls.Button;
 	import mx.controls.Label;
 	import mx.core.UIComponent;
-	import flash.utils.Timer;
 
 	public class UserFeedViewer extends UIComponent
 	{
@@ -19,6 +19,7 @@ package com.chatterwebs
 		private var minimize:Button;
 		private var maximize:Button;
 		private var mute:Button;
+		private var increase:Boolean = true;
 		
 		public var eDispatcher:EventDispatcher = new EventDispatcher();
 		public static const MINIMIZED:String = "UserFeedView.Minimized";
@@ -52,6 +53,16 @@ package com.chatterwebs
 		public function isVisible():Boolean
 		{
 			return canvas.visible;
+		}
+		
+		public function increaseCameraResolution():void
+		{
+			mirror.doubleResolution();
+		}
+		
+		public function normalCameraResolution():void
+		{
+			mirror.normalResolution();
 		}
 		
 		public function kill():void

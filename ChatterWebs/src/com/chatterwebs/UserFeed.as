@@ -38,6 +38,16 @@ package com.chatterwebs
 			microphone.setSilenceLevel(0);
 		}
 		
+		public function doubleResolution():void
+		{
+			camera.setMode(320, 240, 12, false);
+		}
+		
+		public function normalResolution():void
+		{
+			camera.setMode(160, 120, 12, false);
+		}
+		
 		public function resize(newWidth:uint, newHeight:uint):void
 		{
 			this.removeChild(videoCamera);

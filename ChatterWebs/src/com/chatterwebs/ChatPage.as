@@ -37,6 +37,7 @@ package com.chatterwebs
         private var group_id:String;
        
         public var textChat:Canvas;
+        public var streamArea:Canvas;
         public var feedArea:UIComponent;
         public var userNameMsg:Label;
         public var usersList:List;
@@ -91,18 +92,22 @@ package com.chatterwebs
         	userNameMsg.text = "Welcome, " + nickname;
         	resumeSession();
         	
-        	var xpos:uint = 10;
-        	var ypos:uint = 27;
-        	for (var i:uint = 0; i <7; i++)
+        	var xpos:uint = 5;
+        	var ypos:uint = 5;
+        	for (var i:uint = 0; i <8; i++)
         	{
         		var newStream:StreamingVideoViewer = new StreamingVideoViewer();
-        		addChild(newStream);
+        		streamArea.addChild(newStream);
         		newStream.move(xpos, ypos);
         		xpos += 168;
+        		if(i == 3){
+        			ypos = 147;
+        			xpos = 5;
+        		}
         		userStreams.push(newStream);
-        	}
-        	selfFeed.eDispatcher.addEventListener(UserFeedViewer.MINIMIZED, feedListener);
-        	selfFeed.eDispatcher.addEventListener(UserFeedViewer.MAXIMIZED, feedListener);
+        	}       	
+//        	selfFeed.eDispatcher.addEventListener(UserFeedViewer.MINIMIZED, feedListener);
+//        	selfFeed.eDispatcher.addEventListener(UserFeedViewer.MAXIMIZED, feedListener);
         	guestList = connection.guestList;
 		}
 		
@@ -139,6 +144,7 @@ package com.chatterwebs
 		public function videoChat():void
 		{
 			selfFeed.publish(nickname, nc);
+			groupListUpdated(new Event(Event.COMPLETE));
 			updateStreams();
 		}
 		
@@ -301,6 +307,7 @@ package com.chatterwebs
 				case 13: 
 					sendMessage(); //Enter key
 					groupListUpdated(new Event(Event.COMPLETE));
+					debug();
 					break;
 				default: 
 					break;

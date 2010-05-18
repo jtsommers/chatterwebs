@@ -9,19 +9,21 @@
 <mx:Style source="com/chatterwebs/assets/styles.css"/>
 <mx:Canvas 
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
-	width="650" height="290" 
-	backgroundColor="#e6e6e6" x="70" y="350"
+	width="735" height="290" 
+	backgroundColor="#e6e6e6" x="10" y="350"
 	id="textChat"
 >
-	<mx:List width="127" height="185" x="513" y="36" id="usersList"/>
-	<mx:TextArea width="495" height="185" id="messageArea" wordWrap="true" x="10" y="36" editable="false"/>
-	<mx:TextInput text="Type your message then press &quot;Enter&quot;" id="sendMessageInput"  width="630" x="10" y="229"/>
-	<mx:Label x="513" y="10" text="Users" fontWeight="bold"/>
+	<mx:List width="101" height="180" x="436" y="34" id="usersList" paddingTop="2"/>
+	<mx:TextArea width="418" height="178" id="messageArea" wordWrap="true" x="10" y="36" editable="false"/>
+	<mx:TextInput text="Type your message then press &quot;Enter&quot;" id="sendMessageInput"  width="527" x="10" y="222"/>
+	<mx:Label x="423" y="10" text="Users" fontWeight="bold"/>
 	<mx:Label x="10" y="10" text="msg goes here" fontWeight="bold" id="userNameMsg" width="203" height="20"/>
-	<mx:Button label="Start Video Chat" width="253" id="buttonVideo" click="videoChat();" x="75" y="259"/>
-	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="disconnect();" x="336" y="259"/>
+	<mx:Button label="Start Video Chat" width="253" id="buttonVideo" click="videoChat();" x="10" y="252"/>
+	<mx:Button label="Exit ChatterWebs" width="253" id="exitButton" click="disconnect();" x="284" y="252"/>
+	<cw:UserFeedViewer height="177" width="180" x="545" y="34" id="selfFeed"/>
 </mx:Canvas>
-	<cw:UserFeedViewer height="177" width="180" x="540" y="165" id="selfFeed"/>
+	<mx:Canvas x="10" y="10" width="735" height="332" styleName="UserFeedCanvas" borderColor="#757677" alpha="1.0" backgroundColor="#7F8886" id="streamArea">
+	</mx:Canvas>
 	
 	
 </cw:ChatPage>
