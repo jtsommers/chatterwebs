@@ -188,21 +188,71 @@ package com.chatterwebs
 		{
 			var numStreams:uint = guestList.length - 1;		//set current number of streams to guest list size (minus your feed)
 			var streamSize:Rectangle = StreamingVideoViewer.calculateDimensions(numStreams, streamArea.getBounds(this));
-			var xpos:uint = 5;
-			var ypos:uint = 5;
+			var horizontalPadding:uint = streamArea.width;
+			var verticalPadding:uint = streamArea.height;
+			var firstRow:uint = numStreams;					//number of streams in the first row
+			var numRows:uint = 1;
+			for(var ndx:uint = numStreams; ndx>0; ndx--)
+			{
+				if((horizontalPadding - streamSize.width) > 0)
+				{
+					horizontalPadding -= streamSize.width;
+				}
+				if((verticalPadding - streamSize.height) > 0)
+				{
+					verticalPadding -= streamSize.height;
+				}
+			}
+			
+			if(numStreams <= 3)
+			{
+				firstRow = numStreams;
+				numRows =1;
+			}else if(numStreams <=6)
+			{
+				firstRow = 3;
+				numRows = 2;
+			}else if(numStreams <=8)
+			{
+				firstRow = 4;
+				numRows = 2;
+			}else					//invalid number of streams
+			{
+				firstRow = 0;
+				numRows = 0;
+			}
+			horizontalPadding /= (firstRow+1);				//divide by number of padding buffers needed
+			verticalPadding /= (numRows+1);
+			if(horizontalPadding < 5)		
+			{
+				horizontalPadding = 5;						//set to minimum if padding space is less than necessary
+			}
+			if(verticalPadding < 5)	
+			{
+				verticalPadding = 5;						//set to minimum if padding space is less than necessary
+			}
+			
+			if(numStreams == 0)
+			{
+				horizontalPadding = 5;
+				verticalPadding = 5;
+			}
+			
+			var xpos:uint = horizontalPadding;				//initial displacement based on available padding
+			var ypos:uint = verticalPadding;
 			for(var i:uint = 0; i < userStreams.length; i++)
 			{
 				(userStreams[i] as StreamingVideoViewer).animatedResize(streamSize.width);
 				(userStreams[i] as StreamingVideoViewer).animatedMove(xpos, ypos);
-				xpos += streamSize.width+5;
+				xpos += streamSize.width+horizontalPadding;
 				if((xpos + streamSize.width) > streamArea.width)
 				{
-					ypos += streamSize.height+5;
-					xpos = 5;
+					ypos += streamSize.height+verticalPadding;
+					xpos = horizontalPadding;
 				}
 				if((ypos + streamSize.height) > streamArea.height)
 				{
-					ypos = 5;
+					ypos = verticalPadding;
 				}
 			}
 		}
