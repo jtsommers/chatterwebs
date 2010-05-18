@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding='UTF-8'?>
-<group id="{{group.key}}" nickname="{{group.nickname}}">
-  <seats>{% for guest in seats %}
+<group id="{{group.key}}" nickname="{{group.nickname}}" name="{{group.serialnumber}}">
+  <seats serialnumber="{{group.serialnumber}}">{% for guest in seats %}
     <guest id="{{guest.key}}" nickname="{{guest.nickname}}" ticket="{{guest.ticketnumber}}" updated="{{guest.updated|date:"D H:i:s"}}" />{% endfor %}
   </seats>
   <queue>{% for guest in queue %}

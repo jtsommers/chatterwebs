@@ -124,6 +124,7 @@ package com.chatterwebs
 		{
 			updateGroupInfo();
 		}
+		//TODO: what is this doing? that url doesnt work 
 		private function updateGroupInfo():void
 		{
 			var loader:URLLoader = new URLLoader();

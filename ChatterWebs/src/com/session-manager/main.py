@@ -11,6 +11,7 @@ class Group(db.Model):
 	created = db.DateTimeProperty(auto_now_add=True)
 	seatQTY = db.IntegerProperty()
 	ticketnumber = db.IntegerProperty()
+	serialnumber = db.StringProperty()
 	
 class Guest(db.Model):
 	created = db.DateTimeProperty(auto_now_add=True)
@@ -37,8 +38,12 @@ class ViewGroup(webapp.RequestHandler):
 		for guest in guests:
 			if(guest.updated < datetime.now() - timedelta(seconds=15)):
 				guest.delete()
-		guests.filter("ticketnumber >=", 0)
 		seats = guests[0:8]
+		serialnumber = ""
+		for guest in seats:
+			serialnumber = serialnumber + str(guest.ticketnumber)
+		group.serialnumber = serialnumber
+		group.put()
 		queue = None
 		if(guests.count() >= 8):
 			queue = guests[8:20]
@@ -113,6 +118,24 @@ class UpdateGuest(webapp.RequestHandler):
 		guest.updated = datetime.now()
 		guest.put()
 		self.redirect("/group/"+filename+"?group_id="+group_id)
+
+class RefreshGroup(webapp.RequestHandler):
+	def get(self):
+		group_id = self.request.get('group_id')
+		client_serialnumber = self.request.get('serialnumber')
+		group = Group.get(group_id)
+		# -- I'm not sure if I need to recreate the serial number here or not ...?
+		guests = group.guests.order('ticketnumber')
+		seats = guests[0:8]
+		serialnumber = ""
+		for guest in seats:
+			serialnumber = serialnumber + str(guest.ticketnumber)
+		if(group.serialnumber == client_serialnumber):
+			#return False
+			self.response.out.write("false " + serialnumber)
+		else:
+			#return True
+			self.response.out.write("true " + serialnumber)
 			
 class DeleteGroup(webapp.RequestHandler):
 	def get(self, template):
@@ -149,6 +172,7 @@ def main():
 										  ('/new/group/(.*?)', NewGroup),
 										  ('/new/guest/(.*?)', NewGuest),
 										  ('/update/guest/(.*?)', UpdateGuest),
+										  ('/refresh/group', RefreshGroup),
 										  ('/delete/group/(.*?)',DeleteGroup),
 										  ('/delete/guest/(.*?)',DeleteGuest),
 										  ('/', Redirect),

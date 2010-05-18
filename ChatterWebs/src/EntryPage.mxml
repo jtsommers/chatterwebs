@@ -5,20 +5,17 @@
 	layout="absolute" 
 >
 	
-<mx:Canvas width="703" height="402">
+<mx:Canvas id="container" width="703" height="402">
 	<mx:Script> 
 	     <![CDATA[
 	     	//
 	     ]]> 
 	     
      </mx:Script> 
-	<mx:Label x="223.5" y="67" text="Welcome to ChatterWebs" width="203" textAlign="center" id="labelWelcome"/>
-	<mx:TextInput x="310" y="138" width="137" id="username"/>
-	<mx:Label x="154" y="140" text="Enter a screen name:" width="148" textAlign="right" id="labelUsername"/>
-	<mx:Button x="455" y="168" label="Enter Group" id="buttonEnter" click="enter();" width="107"/>
-	<mx:Label x="211" y="170" text="Select a Group:"/>
-	<mx:ComboBox x="310" y="168" width="137" labelField="name" id="category"/>
-	<mx:Button x="455" y="138" label="Start Session" id="startSessionBtn" width="107" click="connect();"/>
+	<mx:Label x="199.5" y="78" text="Welcome to ChatterWebs" width="203" textAlign="center" id="labelWelcome"/>
+	<mx:ComboBox x="303.5" y="141" width="137" labelField="name" id="category" selectedIndex="0"/>
+	<mx:TextInput x="158.5" y="141" width="137" id="username" text="Screen Name"/>
+	<mx:Button x="158.5" y="171" label="Enter" id="buttonEnter" width="282" enabled="false"/>
 
 </mx:Canvas>
 
