@@ -2,6 +2,7 @@ package com.chatterwebs
 {
 	import flash.net.NetConnection;
 	
+	import mx.containers.Canvas;
 	import mx.controls.Label;
 	import mx.core.UIComponent;
 	import mx.effects.*;
@@ -12,6 +13,7 @@ package com.chatterwebs
 		private var player:StreamingVideoPlayer;
 		private var userLabel:Label;
 		private var nc:NetConnection;
+		private var canvas:Canvas;
 		
 		private var defaultWidth:uint = 160;
 		
@@ -31,6 +33,19 @@ package com.chatterwebs
 		{
 			nc = netC;
 			setUser(u);
+		}
+		
+		private function canvasSetup():void
+		{
+			canvas = new Canvas();
+			canvas.styleName = "UserFeedCanvas";
+			canvas.setStyle("borderColor", "#757677");
+			canvas.setStyle("borderStyle", "solid");
+			canvas.setStyle("backgroundColor", "#7F8886");
+			canvas.setStyle("backgroundAlpha", ".4");
+			canvas.move(0, 0);
+			canvas.setActualSize(170, 150);
+			this.addChild(canvas);
 		}
 		
 		public function killStream():void
