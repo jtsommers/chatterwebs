@@ -23,9 +23,10 @@
 	<cw:UserFeedViewer height="177" width="180" x="590" y="9" id="selfFeed"/>
 </mx:Canvas>
 	<mx:Canvas x="10" y="10" width="780" height="320" styleName="UserFeedCanvas" borderColor="#757677" alpha="1.0" backgroundColor="#7F8886" id="streamArea">
-		<mx:Image width="212" height="156" y="5" x="5"/>
-		<mx:Image x="225" y="5" width="212" height="156"/>
-		<mx:Image x="445" y="5" width="212" height="156"/>
+		<mx:Image width="200" height="150" y="5" x="5"/>
+		<mx:Image width="200" height="150" y="5" x="213"/>
+		<mx:Image width="200" height="150" y="5" x="421"/>
+		<mx:Image width="200" height="150" y="163" x="5"/>
 	</mx:Canvas>
 	
 	
