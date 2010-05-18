@@ -159,21 +159,34 @@ package com.chatterwebs
 		
 		public function updateStreams():void
 		{
+			var selfFound:Boolean = false;
 			for(var i:uint = 0; i < userStreams.length; i++)
 			{
 				var curStream:StreamingVideoViewer = (userStreams[i] as StreamingVideoViewer);
 				var nick:String = curStream.nickname;
-				if(nick != guestList[i])
+				var currentGuest:String;
+				if (guestList[i] == this.nickname)
+				{
+					selfFound = true;
+				}
+				if (selfFound)
+				{
+					currentGuest = guestList[i+1];
+				}else
+				{
+					currentGuest = guestList[i];
+				}
+				if(nick != currentGuest)
 				{
 					curStream.killStream();
-					curStream.subscribe(guestList[i], nc);
+					curStream.subscribe(currentGuest, nc);
 				}
 			}
 		}
 		
 		public function dynamicResizeStreams():void
 		{
-			var numStreams:uint = guestList.length;
+			var numStreams:uint = guestList.length - 1;		//set current number of streams to guest list size (minus your feed)
 			var streamSize:Rectangle = StreamingVideoViewer.calculateDimensions(numStreams, streamArea.getBounds(this));
 			var xpos:uint = 5;
 			var ypos:uint = 5;
