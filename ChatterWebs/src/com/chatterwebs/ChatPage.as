@@ -373,7 +373,10 @@ package com.chatterwebs
 			switch(event.keyCode)
 			{
 				case 13: 
-					sendMessage(); //Enter key
+					if(sendMessageInput.text != "")
+					{
+						sendMessage(); //Enter key
+					}
 					groupListUpdated(new Event(Event.COMPLETE));
 					break;
 				default: 
