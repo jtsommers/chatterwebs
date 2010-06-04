@@ -3,6 +3,7 @@ package com.chatterwebs
 	import flash.geom.Rectangle;
 	
 	import mx.containers.Canvas;
+	import mx.controls.Alert;
 	import mx.core.Application;
 	import mx.events.FlexEvent;
 	
@@ -73,8 +74,6 @@ package com.chatterwebs
             bm = BrowserManager.getInstance();                
             bm.init("", "Welcome!");
             
-            connectOn = true;
-            connect();
             stage.focus = stage; //Set Focus to Messages
             sendMessageInput.addEventListener(FocusEvent.FOCUS_IN, goBlank);
             sendMessageInput.addEventListener(FocusEvent.FOCUS_OUT, fillIn);
@@ -90,9 +89,10 @@ package com.chatterwebs
         	ip = o.ip;
         	if(!nickname)
         	{
-        		nickname = "Default User";
+        		timeOut();
         	}
         	userNameMsg.text = "Welcome, " + nickname;
+        	//server connect occurs here
         	resumeSession();
         	
         	var xpos:uint = 5;
@@ -118,12 +118,22 @@ package com.chatterwebs
 			var o:Object = URLUtil.stringToObject(bm.fragment, "&");          // get URL   
 			group_id = o.group_id;											  // get group_id
 			guest_id = o.guest_id;											  // get guest_id
-			connection = new ConnectionManager(nickname, group_id, guest_id); // set connection to session manager
-			connection.eDispatcher.addEventListener(ConnectionManager.GROUP_CHANGED, groupListUpdated);
+			if(group_id && guest_id)
+			{
+				connection = new ConnectionManager(nickname, group_id, guest_id); // set connection to session manager
+				connection.eDispatcher.addEventListener(ConnectionManager.GROUP_CHANGED, groupListUpdated);
+				//TODO: move connect logic until after first name check
+				connectOn = true;
+            	connect();
+			}else
+			{	//entry did not occur through valid entry page
+				timeOut();
+			}
 		}
 		private function groupListUpdated(e:Event):void
 		{
 			guestList = connection.guestList;
+			validateCurrentUser();
 			updateStreams();
 			dynamicResizeStreams();
 			textChatUserList = new Array();
@@ -135,7 +145,47 @@ package com.chatterwebs
 		}
 		// == END Session Management ===============================================================================
 		
+		private function validateCurrentUser():void
+		{
+			if(guestList)
+			{
+				for(var i:uint=0; i < guestList.length; i++)
+				{
+					if(nickname == guestList[i])
+					{
+						//User is allowed to be in room, do not boot out to entry page
+						return;
+					}
+				}
+			}else
+			{
+				timeOut();
+			}
+		}
 		
+		private function timeOut():void
+		{
+			//Current user was not found in valid guest list.
+			//Immediately disconnect, display a message that user will be redirected in 10 seconds
+			//along with a button to immediately redirect to the entry page to allow user to reconnect.
+			killAllStreams();
+			nc.close();
+			connection = null;
+			Alert.show("Connection Timed Out, Press OK to return to login page",
+				"Connection Error", Alert.OK, this, redirectListener);
+			//TODO: potentially add automatic redirect timer
+		}
+		
+		private function redirectListener(e:Event):void
+		{
+			if(this.ip)
+			{
+				navigateToURL(new URLRequest("EntryPage.html?#nickname="+this.nickname+"&ip="+this.ip), "_top");
+			}else
+			{
+				navigateToURL(new URLRequest("EntryPage.html?#nickname="+this.nickname), "_top");
+			}
+		}
 		
 		/** 
 		* videoChat is called whenever the button is pressed
@@ -355,9 +405,12 @@ package com.chatterwebs
 					textChatObject = new TextChat(textSharedName, nc, messageArea);
 					stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed); // Enables Enter Key for message send
 					addMessage("<b>has connected to ChatterWebs</b>");
+					this.buttonVideo.enabled = true;
 				   break;
 				case "NetConnection.Connect.Closed" :
             		stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
+            		this.guestList = null;
+            		this.validateCurrentUser();
 				   break;
 				case "NetConnection.Connect.Failed" :
 				   break;
@@ -373,11 +426,10 @@ package com.chatterwebs
 			switch(event.keyCode)
 			{
 				case 13: 
-					if(sendMessageInput.text != "")
+					if(sendMessageInput.text != "")		//don't send empty strings through chat
 					{
 						sendMessage(); //Enter key
 					}
-					groupListUpdated(new Event(Event.COMPLETE));
 					break;
 				default: 
 					break;

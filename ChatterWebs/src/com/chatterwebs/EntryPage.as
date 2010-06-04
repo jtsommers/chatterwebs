@@ -1,5 +1,4 @@
 package com.chatterwebs{
-	// ActionScript file test
 	import flash.events.*;
 	import flash.net.*;
 	import flash.utils.*;
@@ -8,6 +7,11 @@ package com.chatterwebs{
 	import mx.controls.*;
 	import mx.core.Application;
 	import mx.events.FlexEvent;
+	
+	import mx.managers.BrowserManager;
+    import mx.managers.IBrowserManager;
+    import mx.utils.URLUtil;
+	
 	public class EntryPage extends Application{
 		//UI objects
 		public var category:ComboBox;
@@ -16,6 +20,9 @@ package com.chatterwebs{
 		public var memberList:List;
 		public var startSessionBtn:Button;
 		public var buttonEnter:Button;
+		public var customIP:String;
+		
+		private var bm:IBrowserManager;
 		
 		private var connection:ConnectionManager;
 		private var rootURL:String = 'http://chatterwebs.appspot.com';
@@ -33,6 +40,18 @@ package com.chatterwebs{
 			username.addEventListener(MouseEvent.CLICK, userNameFocused);
 			username.addEventListener(FocusEvent.FOCUS_OUT, userNameUnFocused);
 			buttonEnter.addEventListener(MouseEvent.CLICK,connect);
+			
+			//parse extra URL parameters (ip address and nickname if applicable)
+			bm = BrowserManager.getInstance();                
+            bm.init("", "Welcome!");
+			var o:Object = URLUtil.stringToObject(bm.fragment, "&");
+        	customIP = o.ip;
+        	if(o.nickname)
+        	{
+        		//nickname parameter passed in (presumably through connection time out and being booted back to the entry page)
+        		username.text = o.nickname;
+        		buttonEnter.enabled = true;
+        	}
 		}
 		
 		private function userNameEntered(e:Event):void
@@ -86,19 +105,23 @@ package com.chatterwebs{
 			var group_id:String = category.selectedItem.@id;
 			connection = new ConnectionManager(username.text,group_id, null); 	// start connection
 			connection.eDispatcher.addEventListener(ConnectionManager.SESSION_STARTED, enter);
-			
 		}
 		// == END Session Manager ==============================================================================
 		
 		
 		//---- END Group Info Update ----
 		/** 
-		* enter is called whenever the buttonEnter is pressed
+		* enter is called whenever the buttonEnter is pressed after session manager has validly started
 		*/
 		public function enter(e:Event):void
 		{
-			//navigateToURL(new URLRequest("file:///C:/Users/Sandi/Documents/Flex Builder 3/FlexChat/bin-debug/main.html?#userName="+user_txt.text+"&seatNumber="+seatNumber), "_blank");
-			navigateToURL(new URLRequest("main.html?#nickname="+username.text+"&guest_id="+connection.guest_id+"&group_id="+connection.group_id), "_top");
+			if(customIP)
+			{
+				navigateToURL(new URLRequest("main.html?#nickname="+username.text+"&guest_id="+connection.guest_id+"&group_id="+connection.group_id+"&ip="+customIP), "_top");
+			}else
+			{
+				navigateToURL(new URLRequest("main.html?#nickname="+username.text+"&guest_id="+connection.guest_id+"&group_id="+connection.group_id), "_top");
+			}
 		}
 	}
 }
