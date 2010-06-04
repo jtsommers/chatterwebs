@@ -1,3 +1,7 @@
+Download and install Wowza Media Server for your environment from: http://www.wowzamedia.com/store.html
+From the same location you can also get a developer license that will allow you to run the server with a limit of 10 concurrent connections.
+
+DEFAULT INSTALL DIRECTORIES
 Windows Install Directory: C:\Program Files\Wowza Media Systems\Wowza Media Server 2\
 Mac Install Directory: HD/Library/Wowza Media Server 2.0/
 -Both of the above will be referred to as [install-location]
@@ -6,3 +10,9 @@ Mac Install Directory: HD/Library/Wowza Media Server 2.0/
 1) Copy the wms-plugin-textchat.jar from [setup]/lib/ to [install-location]/lib/
 2) Copy the chatterwebs folder from [setup]/conf/ to [install-location]/conf/
 3) Copy the chatterWebs folder from [setup]/applications to [install-location]/applications/
+
+To startup the server run startup.bat in the [install-location]/bin/ directory (shutdown.bat is also located here).  Startup and shutdown shortcuts are also placed in the start menu or searchable "Wowza Startup" and "Wowza Shutdown."
+
+To setup the client to stream from your Wowza Media server you must edit either the html-template or the html file itself and change the flashvars "saddress" (server address) parameter to "rtmp://[your-ip]/chatterWebs"  (line 90 of ChatterWebs/html-template/index.template.html or ChatterWebs/bin-debug/main.html)
+
+To stream accross the web, you need to forward ports 1395 and 8086 to your computer's local ip and use the ip address of your router.  (see www.portforward.com)

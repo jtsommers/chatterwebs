@@ -21,9 +21,14 @@ package com.chatterwebs
 		public var eDispatcher : EventDispatcher = new EventDispatcher(); 
 		public static const GROUP_CHANGED:String = "Group List Changed";
 		public static const SESSION_STARTED:String = "Session Started";
+		public static const MILLISECOND_UPDATE:uint = 2000;
+		
+		private var timeOut:Timer;
 		
 		public function ConnectionManager(nickname:String, group_id:String, guest_id:String)
 		{
+			timeOut = new Timer(2*MILLISECOND_UPDATE);
+			timeOut.addEventListener(TimerEvent.TIMER, sessionTimeOut);
 			this.group_id = group_id;
 			this.guest_id = guest_id;
 			this.nickname = nickname;
@@ -36,12 +41,13 @@ package com.chatterwebs
 		//---- Main Session Handler ----
 		private function resumeSession():void
 		{
-			var guestTimer:Timer = new Timer(2000, 1000000);
+			var guestTimer:Timer = new Timer(MILLISECOND_UPDATE, 1000000);
 			guestTimer.addEventListener(TimerEvent.TIMER, keepAlive);
 			guestTimer.start();
 		}
 		private function keepAlive(e:TimerEvent):void
 		{
+			guest_list = null;			//clears the guest list if loader fails to respond
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, refreshSessionData);
 			loader.load(new URLRequest(updateURL + 'guest_id=' + guest_id + '&group_id=' + group_id));
@@ -73,10 +79,19 @@ package com.chatterwebs
 			var sn:String = group.@serialnumber;
 			var guests:XMLList = group.seats.guest;
 			var temp_guest_list:Array = new Array();
-			for each(var guest:XML in guests){
+			for each(var guest:XML in guests)
+			{
 				temp_guest_list.push(guest.@nickname)
 			}
 			guest_list = temp_guest_list;
+			eDispatcher.dispatchEvent(new Event(GROUP_CHANGED));
+			timeOut.reset();
+			timeOut.start();
+		}
+		
+		private function sessionTimeOut(e:Event):void
+		{
+			guest_list = null;
 			eDispatcher.dispatchEvent(new Event(GROUP_CHANGED));
 		}
 		
